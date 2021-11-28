@@ -1,3 +1,14 @@
 <resources>
     <string name="app_name">RussellBoard</string>
+
+    <!-- Drawer Menu -->
+    <string name="add_category1">Объявления</string>
+    <string name="add_my_adds">Мои объявления</string>
+    <string name="add_car">Машины</string>
+    <string name="add_smartphone">Смартфоны</string>
+    <string name="add_appliances">Бытовая техника</string>
+    <string name="add_category2">Аккаунт</string>
+    <string name="acc_registration">Регестрация</string>
+    <string name="acc_sign_in">Вход</string>
+    <string name="acc_sign_out">Выход</string>
 </resources>

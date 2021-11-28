@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+    <item android:title="@string/add_category1">
+        <menu>
+            <item
+                android:id="@+id/add_my_adds"
+                android:title="@string/add_my_adds" />
+            <item
+                android:id="@+id/add_сar"
+                android:title="@string/add_car" />
+            <item
+                android:id="@+id/add_smartphone"
+                android:title="@string/add_smartphone" />
+            <item
+                android:id="@+id/add_appliances"
+                android:title="@string/add_appliances" />
+        </menu>
+    </item>
+    <item android:title="@string/add_category2">
+        <menu>
+            <item
+                android:id="@+id/acc_registration"
+                android:title="@string/acc_registration" />
+            <item
+                android:id="@+id/acc_sign_in"
+                android:title="@string/acc_sign_in" />
+            <item
+                android:id="@+id/acc_sign_out"
+                android:title="@string/acc_sign_out" />
+        </menu>
+    </item>
+
+</menu>
