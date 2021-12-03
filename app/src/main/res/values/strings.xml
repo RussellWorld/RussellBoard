@@ -11,4 +11,7 @@
     <string name="acc_registration">Регестрация</string>
     <string name="acc_sign_in">Вход</string>
     <string name="acc_sign_out">Выход</string>
+    <string name="open">Open</string>
+    <string name="close">Close</string>
+    <string name="add_PC">Компьютеры</string>
 </resources>

@@ -11,6 +11,9 @@
                 android:id="@+id/add_сar"
                 android:title="@string/add_car" />
             <item
+            android:id="@+id/add_PC"
+            android:title="@string/add_PC" />
+            <item
                 android:id="@+id/add_smartphone"
                 android:title="@string/add_smartphone" />
             <item
