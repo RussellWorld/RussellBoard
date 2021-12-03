@@ -8,8 +8,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
 import com.google.android.material.navigation.NavigationView
 import com.russellworld.russellboard.databinding.ActivityMainBinding
-import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.android.synthetic.main.main_content.*
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
     lateinit var _binding: ActivityMainBinding
@@ -24,11 +22,11 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     private fun init() {
         val toggle =
             ActionBarDrawerToggle(
-                this, drawer_layout, main_toolbar, R.string.open, R.string.close
+                this, _binding.drawerLayout, _binding.mainContent.mainToolbar, R.string.open, R.string.close
             )
         _binding.drawerLayout.addDrawerListener(toggle)
         toggle.syncState()
-        drawer_nav_view.setNavigationItemSelectedListener(this)
+        _binding.drawerNavView.setNavigationItemSelectedListener(this)
     }
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
@@ -58,7 +56,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 Toast.makeText(this, "${item.title}", Toast.LENGTH_SHORT).show()
             }
         }
-        drawer_layout.closeDrawer(GravityCompat.START)
+        _binding.drawerLayout.closeDrawer(GravityCompat.START)
         return true
     }
 }
