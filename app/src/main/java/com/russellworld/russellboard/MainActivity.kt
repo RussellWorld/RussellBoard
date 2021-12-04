@@ -7,10 +7,16 @@ import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
 import com.google.android.material.navigation.NavigationView
+import com.google.firebase.auth.FirebaseAuth
 import com.russellworld.russellboard.databinding.ActivityMainBinding
+import com.russellworld.russellboard.dialoghelper.DialogHelper
+import com.russellworld.russellboard.utilits.SIGN_IN_STATE
+import com.russellworld.russellboard.utilits.SIGN_UP_STATE
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
-    lateinit var _binding: ActivityMainBinding
+    private lateinit var _binding: ActivityMainBinding
+    private val dialogHelper = DialogHelper(this)
+    val mAuth = FirebaseAuth.getInstance()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -47,10 +53,10 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 Toast.makeText(this, "${item.title}", Toast.LENGTH_SHORT).show()
             }
             R.id.acc_registration -> {
-                Toast.makeText(this, "${item.title}", Toast.LENGTH_SHORT).show()
+                dialogHelper.createSignDialog(SIGN_UP_STATE)
             }
             R.id.acc_sign_in -> {
-                Toast.makeText(this, "${item.title}", Toast.LENGTH_SHORT).show()
+                dialogHelper.createSignDialog(SIGN_IN_STATE)
             }
             R.id.acc_sign_out -> {
                 Toast.makeText(this, "${item.title}", Toast.LENGTH_SHORT).show()

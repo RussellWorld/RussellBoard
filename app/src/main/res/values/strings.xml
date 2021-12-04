@@ -14,4 +14,14 @@
     <string name="open">Open</string>
     <string name="close">Close</string>
     <string name="add_PC">Компьютеры</string>
+    <!-- Drawer Menu -->
+    <string name="email_hint">E-mail</string>
+    <string name="password_hint">Password</string>
+    <string name="sign_up_action">Зарегестрироваться</string>
+    <string name="sign_in_action">Войти</string>
+    <string name="forget_password">Забыли пароль?</string>
+    <string name="sign_up_error">Неудалось зарегестрироваться</string>
+    <string name="sign_verification_email_error">Неудалось отправить Email для потвержения!</string>
+    <string name="sign_verification_done">На вашу почту была отправлена ссылка для подтвержения вашего аккаунта,
+        пожалуйста подтвердите ваш аккаунт!</string>
 </resources>
