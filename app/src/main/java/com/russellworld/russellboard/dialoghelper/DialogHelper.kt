@@ -9,28 +9,35 @@ import com.russellworld.russellboard.utilits.SIGN_UP_STATE
 
 class DialogHelper(private val mainActivity: MainActivity) {
     private val accountHelper = AccountHelper(mainActivity)
+
     fun createSignDialog(index: Int) {
         val builder = AlertDialog.Builder(mainActivity)
-        val _binding = SignDialogBinding.inflate(mainActivity.layoutInflater)
+        val rootDialogElement = SignDialogBinding.inflate(mainActivity.layoutInflater)
+        builder.setView(rootDialogElement.root)
+
 
         if (index == SIGN_UP_STATE) {
-            _binding.tvTitleSign.text = mainActivity.resources.getString(R.string.acc_registration)
-            _binding.btnSignUp.text = mainActivity.resources.getString(R.string.sign_up_action)
+            rootDialogElement.tvTitleSign.text = mainActivity.resources.getString(R.string.acc_registration)
+            rootDialogElement.btnSignUp.text = mainActivity.resources.getString(R.string.sign_up_action)
         } else {
-            _binding.tvTitleSign.text = mainActivity.resources.getString(R.string.acc_sign_in)
-            _binding.btnSignUp.text = mainActivity.resources.getString(R.string.sign_in_action)
+            rootDialogElement.tvTitleSign.text = mainActivity.resources.getString(R.string.acc_sign_in)
+            rootDialogElement.btnSignUp.text = mainActivity.resources.getString(R.string.sign_in_action)
         }
-        _binding.btnSignIn.setOnClickListener {
+        val dialog = builder.create()
+        rootDialogElement.btnSignUp.setOnClickListener {
+            dialog.dismiss()
             if (index == SIGN_UP_STATE) {
                 accountHelper.signUpWithEmail(
-                    _binding.edSignEmail.text.toString(),
-                    _binding.edSignPassword.text.toString()
+                    rootDialogElement.edSignEmail.text.toString(),
+                    rootDialogElement.edSignPassword.text.toString()
                 )
             } else {
-
+                accountHelper.signInWithEmail(
+                    rootDialogElement.edSignEmail.text.toString(),
+                    rootDialogElement.edSignPassword.text.toString()
+                )
             }
         }
-        builder.setView(_binding.root)
-        builder.show()
+        dialog.show()
     }
 }
