@@ -26,4 +26,6 @@
     <string name="sign_verification_email_error">Неудалось отправить Email для потвержения!</string>
     <string name="sign_verification_done">На вашу почту была отправлена ссылка для подтвержения вашего аккаунта,
         пожалуйста подтвердите ваш аккаунт!</string>
+    <string name="email_resset_password_sent">Reset Email was sent!</string>
+    <string name="dialog_reset_email_message">Для востановления пароля укажите ваш Email адресс</string>
 </resources>

@@ -16,15 +16,15 @@ import com.russellworld.russellboard.utilits.SIGN_IN_STATE
 import com.russellworld.russellboard.utilits.SIGN_UP_STATE
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
-    private lateinit var _binding: ActivityMainBinding
+    private lateinit var rootMainElement: ActivityMainBinding
     private val dialogHelper = DialogHelper(this)
     val mAuth = FirebaseAuth.getInstance()
     private lateinit var tvAccount: TextView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        _binding = ActivityMainBinding.inflate(layoutInflater)
-        setContentView(_binding.root)
+        rootMainElement = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(rootMainElement.root)
         init()
     }
 
@@ -36,12 +36,12 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     private fun init() {
         val toggle =
             ActionBarDrawerToggle(
-                this, _binding.drawerLayout, _binding.mainContent.mainToolbar, R.string.open, R.string.close
+                this, rootMainElement.drawerLayout, rootMainElement.mainContent.mainToolbar, R.string.open, R.string.close
             )
-        _binding.drawerLayout.addDrawerListener(toggle)
+        rootMainElement.drawerLayout.addDrawerListener(toggle)
         toggle.syncState()
-        _binding.drawerNavView.setNavigationItemSelectedListener(this)
-        tvAccount = _binding.drawerNavView.getHeaderView(0).findViewById(R.id.drawer_header_textv)
+        rootMainElement.drawerNavView.setNavigationItemSelectedListener(this)
+        tvAccount = rootMainElement.drawerNavView.getHeaderView(0).findViewById(R.id.drawer_header_textv)
     }
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
@@ -72,7 +72,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 mAuth.signOut()
             }
         }
-        _binding.drawerLayout.closeDrawer(GravityCompat.START)
+        rootMainElement.drawerLayout.closeDrawer(GravityCompat.START)
         return true
     }
 
