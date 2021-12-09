@@ -1,5 +1,6 @@
 package com.russellworld.russellboard
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.MenuItem
 import android.widget.TextView
@@ -7,11 +8,14 @@ import android.widget.Toast
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
+import com.google.android.gms.auth.api.signin.GoogleSignIn
+import com.google.android.gms.common.api.ApiException
 import com.google.android.material.navigation.NavigationView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.russellworld.russellboard.databinding.ActivityMainBinding
 import com.russellworld.russellboard.dialoghelper.DialogHelper
+import com.russellworld.russellboard.utilits.SIGN_IN_REQUEST_CODE
 import com.russellworld.russellboard.utilits.SIGN_IN_STATE
 import com.russellworld.russellboard.utilits.SIGN_UP_STATE
 
@@ -28,6 +32,22 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         init()
     }
 
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        if (requestCode == SIGN_IN_REQUEST_CODE) {
+            val task = GoogleSignIn.getSignedInAccountFromIntent(data)
+            try {
+                val account = task.getResult(ApiException::class.java)
+                if (account != null){
+                    dialogHelper.accountHelper.signInFirebaseWithGoogle(account.idToken!!)
+                }
+            }catch (e: ApiException){
+                Toast.makeText(this, e.message, Toast.LENGTH_SHORT).show()
+            }
+        }
+        super.onActivityResult(requestCode, resultCode, data)
+
+    }
+
     override fun onStart() {
         super.onStart()
         uiUpdate(mAuth.currentUser)
@@ -36,7 +56,11 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     private fun init() {
         val toggle =
             ActionBarDrawerToggle(
-                this, rootMainElement.drawerLayout, rootMainElement.mainContent.mainToolbar, R.string.open, R.string.close
+                this,
+                rootMainElement.drawerLayout,
+                rootMainElement.mainContent.mainToolbar,
+                R.string.open,
+                R.string.close
             )
         rootMainElement.drawerLayout.addDrawerListener(toggle)
         toggle.syncState()

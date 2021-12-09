@@ -4,6 +4,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+
+
     <TextView
         android:id="@+id/tvTitleSign"
         android:layout_width="0dp"
@@ -51,15 +53,27 @@
         android:id="@+id/btnSignUpIn"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="8dp"
         android:layout_marginBottom="16dp"
+
+        android:backgroundTint="@color/teal_700"
         android:text="@string/sign_up_action"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@+id/edSignEmail"
+        app:layout_constraintEnd_toEndOf="@+id/btnSignInGoogle"
         app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="@+id/edSignEmail"
-        app:layout_constraintTop_toBottomOf="@+id/edSignPassword"
+        app:layout_constraintStart_toStartOf="@+id/btnSignInGoogle"
+        app:layout_constraintTop_toBottomOf="@+id/btnSignInGoogle"
         app:layout_constraintVertical_bias="0.034" />
+
+    <com.google.android.gms.common.SignInButton
+        android:id="@+id/btnSignInGoogle"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        app:buttonSize="standard"
+        app:layout_constraintEnd_toEndOf="@+id/edSignPassword"
+        app:layout_constraintStart_toStartOf="@+id/edSignPassword"
+        app:layout_constraintTop_toBottomOf="@+id/edSignPassword" />
 
     <Button
         android:id="@+id/btnForgetPassword"
@@ -67,9 +81,8 @@
         android:layout_height="wrap_content"
         android:text="@string/forget_password"
         android:visibility="gone"
-        app:layout_constraintEnd_toEndOf="@+id/edSignEmail"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="@+id/edSignEmail"
+        app:layout_constraintEnd_toEndOf="@+id/btnSignInGoogle"
+        app:layout_constraintStart_toStartOf="@+id/btnSignInGoogle"
         app:layout_constraintTop_toBottomOf="@+id/btnSignUpIn" />
 
     <TextView

@@ -10,7 +10,7 @@ import com.russellworld.russellboard.databinding.SignDialogBinding
 import com.russellworld.russellboard.utilits.SIGN_UP_STATE
 
 class DialogHelper(private val mainActivity: MainActivity) {
-    private val accountHelper = AccountHelper(mainActivity)
+   val accountHelper = AccountHelper(mainActivity)
 
     fun createSignDialog(index: Int) {
         val builder = AlertDialog.Builder(mainActivity)
@@ -25,6 +25,9 @@ class DialogHelper(private val mainActivity: MainActivity) {
         }
         rootDialogElement.btnForgetPassword.setOnClickListener {
             setOnClickResetPassword(dialog, rootDialogElement)
+        }
+        rootDialogElement.btnSignInGoogle.setOnClickListener {
+            accountHelper.signInWithGoogle()
         }
         dialog.show()
     }
