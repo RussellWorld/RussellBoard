@@ -40,7 +40,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 if (account != null){
                     dialogHelper.accountHelper.signInFirebaseWithGoogle(account.idToken!!)
                 }
-            }catch (e: ApiException){
+            }catch (e: Exception){
                 Toast.makeText(this, e.message, Toast.LENGTH_SHORT).show()
             }
         }

@@ -13,6 +13,7 @@ import com.russellworld.russellboard.utilits.SIGN_IN_REQUEST_CODE
 class AccountHelper(private val mainActivity: MainActivity) {
     private lateinit var signInClient: GoogleSignInClient
 
+
     fun signUpWithEmail(email: String, password: String) {
         if (email.isNotEmpty() && password.isNotEmpty()) {
             mainActivity.mAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener { task ->
@@ -20,11 +21,7 @@ class AccountHelper(private val mainActivity: MainActivity) {
                     sendEmailVerification(task.result.user!!)
                     mainActivity.uiUpdate(task.result?.user)
                 } else {
-                    Toast.makeText(
-                        mainActivity,
-                        mainActivity.getString(R.string.sign_up_error),
-                        Toast.LENGTH_SHORT
-                    ).show()
+                    Toast.makeText(mainActivity, "${task.exception?.message}", Toast.LENGTH_LONG).show()
                 }
             }
         }
@@ -32,7 +29,7 @@ class AccountHelper(private val mainActivity: MainActivity) {
 
     private fun getSignInClient(): GoogleSignInClient {
         val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-            .requestIdToken(mainActivity.getString(R.string.web_client_id)).build()
+            .requestIdToken(mainActivity.getString(R.string.web_client_id)).requestEmail().build()
         return GoogleSignIn.getClient(mainActivity, gso)
     }
 
@@ -44,9 +41,10 @@ class AccountHelper(private val mainActivity: MainActivity) {
 
     fun signInFirebaseWithGoogle(token: String) {
         val credential = GoogleAuthProvider.getCredential(token, null)
-        mainActivity.mAuth.signInWithCredential(credential).addOnCompleteListener {task ->
-            if (task.isSuccessful){
+        mainActivity.mAuth.signInWithCredential(credential).addOnCompleteListener { task ->
+            if (task.isSuccessful) {
                 Toast.makeText(mainActivity, "Sign in done", Toast.LENGTH_SHORT).show()
+                mainActivity.uiUpdate(task.result.user)
             }
         }
     }
@@ -57,11 +55,7 @@ class AccountHelper(private val mainActivity: MainActivity) {
                 if (task.isSuccessful) {
                     mainActivity.uiUpdate(task.result?.user)
                 } else {
-                    Toast.makeText(
-                        mainActivity,
-                        mainActivity.getString(R.string.sign_in_error),
-                        Toast.LENGTH_SHORT
-                    ).show()
+                    Toast.makeText(mainActivity, "${task.exception?.message}", Toast.LENGTH_LONG).show()
                 }
             }
         }
