@@ -4,10 +4,13 @@ import android.widget.Toast
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
+import com.google.firebase.auth.EmailAuthProvider
+import com.google.firebase.auth.FirebaseAuthUserCollisionException
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.GoogleAuthProvider
 import com.russellworld.russellboard.MainActivity
 import com.russellworld.russellboard.R
+import com.russellworld.russellboard.utilits.ERROR_EMAIL_ALREADY_IN_USE
 import com.russellworld.russellboard.utilits.SIGN_IN_REQUEST_CODE
 
 class AccountHelper(private val mainActivity: MainActivity) {
@@ -21,9 +24,34 @@ class AccountHelper(private val mainActivity: MainActivity) {
                     sendEmailVerification(task.result.user!!)
                     mainActivity.uiUpdate(task.result?.user)
                 } else {
-                    Toast.makeText(mainActivity, "${task.exception?.message}", Toast.LENGTH_LONG).show()
+                    if ((task.exception as FirebaseAuthUserCollisionException).errorCode == ERROR_EMAIL_ALREADY_IN_USE) {
+                        linkEmailToG(email, password)
+                    } else {
+                        Toast.makeText(mainActivity, "${task.exception?.message}", Toast.LENGTH_LONG).show()
+                    }
+
                 }
             }
+        }
+    }
+
+    private fun linkEmailToG(email: String, password: String) {
+        val credential = EmailAuthProvider.getCredential(email, password)
+
+        if (mainActivity.mAuth.currentUser != null) {
+            mainActivity.mAuth.currentUser!!.linkWithCredential(credential).addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    Toast.makeText(
+                        mainActivity,
+                        mainActivity.getString(R.string.link_done),
+                        Toast.LENGTH_LONG
+                    )
+                        .show()
+                }
+            }
+        } else {
+            Toast.makeText(mainActivity, mainActivity.getString(R.string.enter_to_g), Toast.LENGTH_LONG)
+                .show()
         }
     }
 

@@ -29,4 +29,6 @@
     <string name="email_resset_password_sent">Reset Email was sent!</string>
     <string name="dialog_reset_email_message">Для востановления пароля укажите ваш Email адресс</string>
     <string name="web_client_id" translatable="false">679438181095-gsl02kdi41ojf1di4alhvk88ogt6ollf.apps.googleusercontent.com</string>
+    <string name="link_done">Email + Google Account соеденены</string>
+    <string name="enter_to_g">У вас уже есть аккаунт с этим Email адресом</string>
 </resources>
