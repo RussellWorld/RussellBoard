@@ -2,6 +2,7 @@ package com.russellworld.russellboard
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.Menu
 import android.view.MenuItem
 import android.widget.TextView
 import android.widget.Toast
@@ -32,15 +33,20 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         init()
     }
 
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.main_menu, menu)
+        return super.onCreateOptionsMenu(menu)
+    }
+
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         if (requestCode == SIGN_IN_REQUEST_CODE) {
             val task = GoogleSignIn.getSignedInAccountFromIntent(data)
             try {
                 val account = task.getResult(ApiException::class.java)
-                if (account != null){
+                if (account != null) {
                     dialogHelper.accountHelper.signInFirebaseWithGoogle(account.idToken!!)
                 }
-            }catch (e: Exception){
+            } catch (e: Exception) {
                 Toast.makeText(this, e.message, Toast.LENGTH_SHORT).show()
             }
         }
@@ -54,6 +60,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     }
 
     private fun init() {
+        setSupportActionBar(rootMainElement.mainContent.mainToolbar)
         val toggle =
             ActionBarDrawerToggle(
                 this,
@@ -94,6 +101,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             R.id.acc_sign_out -> {
                 uiUpdate(null)
                 mAuth.signOut()
+                dialogHelper.accountHelper.signOutGoogleAccount()
             }
         }
         rootMainElement.drawerLayout.closeDrawer(GravityCompat.START)
