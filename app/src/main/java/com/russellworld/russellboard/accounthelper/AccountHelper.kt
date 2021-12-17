@@ -30,15 +30,24 @@ class AccountHelper(private val mainActivity: MainActivity) {
                         }
                     }
                     when ((task.exception as FirebaseAuthInvalidCredentialsException).errorCode) {
-                        ERROR_INVALID_EMAIL -> {}
-                        ERROR_WRONG_PASSWORD -> {}
+                        ERROR_INVALID_EMAIL -> {
+                            Toast.makeText(mainActivity, "${task.exception?.message}", Toast.LENGTH_LONG)
+                                .show()
+                        }
+                        ERROR_WRONG_PASSWORD -> {
+                            Toast.makeText(mainActivity, "${task.exception?.message}", Toast.LENGTH_LONG)
+                                .show()
+                        }
                         else -> {
                             Toast.makeText(mainActivity, "${task.exception?.message}", Toast.LENGTH_LONG)
                                 .show()
                         }
                     }
                     when ((task.exception as FirebaseAuthWeakPasswordException).errorCode) {
-                        ERROR_ERROR_WEAK_PASSWORD -> {}
+                        ERROR_ERROR_WEAK_PASSWORD -> {
+                            Toast.makeText(mainActivity, "${task.exception?.message}", Toast.LENGTH_LONG)
+                                .show()
+                        }
                         else -> {
                             Toast.makeText(mainActivity, "${task.exception?.message}", Toast.LENGTH_LONG)
                                 .show()
@@ -109,8 +118,14 @@ class AccountHelper(private val mainActivity: MainActivity) {
                         mainActivity.uiUpdate(task.result?.user)
                     } else {
                         when ((task.exception as FirebaseAuthInvalidCredentialsException).errorCode) {
-                            ERROR_INVALID_EMAIL -> {}
-                            ERROR_WRONG_PASSWORD -> {}
+                            ERROR_INVALID_EMAIL -> {
+                                Toast.makeText(mainActivity, "${task.exception?.message}", Toast.LENGTH_LONG)
+                                    .show()
+                            }
+                            ERROR_WRONG_PASSWORD -> {
+                                Toast.makeText(mainActivity, "${task.exception?.message}", Toast.LENGTH_LONG)
+                                    .show()
+                            }
                             else -> {
                                 Toast.makeText(mainActivity, "${task.exception?.message}", Toast.LENGTH_LONG)
                                     .show()
@@ -145,6 +160,5 @@ class AccountHelper(private val mainActivity: MainActivity) {
                 ).show()
             }
         }
-
     }
 }
