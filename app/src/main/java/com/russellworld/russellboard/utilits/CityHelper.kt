@@ -7,7 +7,7 @@ import java.io.InputStream
 
 object CityHelper {
     fun getAllCountries(context: Context): ArrayList<String> {
-        var tempArray = ArrayList<String>()
+        val tempArray = ArrayList<String>()
         try {
             val inputStream: InputStream = context.assets.open("countriesToCities.json")
             val size: Int = inputStream.available()
@@ -26,5 +26,22 @@ object CityHelper {
 
         }
         return tempArray
+    }
+
+    fun filterListData(list: ArrayList<String>, searchText: String?): ArrayList<String> {
+        val tempList = ArrayList<String>()
+        tempList.clear()
+        if (searchText == null) {
+            tempList.add("No result")
+            return tempList
+        }
+        for (selection: String in list) {
+            if (selection.lowercase().startsWith(searchText.lowercase())) {
+                tempList.add(selection)
+            }
+
+        }
+        if (tempList.size == 0) tempList.add("No result")
+        return tempList
     }
 }
