@@ -15,7 +15,7 @@
     <string name="close">Close</string>
     <string name="add_PC">Компьютеры</string>
     <string name="not_reg">Войдите или зарегестрируйтесь!</string>
-    <!-- Drawer Menu -->
+    <!-- Sign Dialog -->
     <string name="email_hint">E-mail</string>
     <string name="password_hint">Password</string>
     <string name="sign_up_action">Зарегестрироваться</string>
@@ -31,4 +31,7 @@
     <string name="web_client_id" translatable="false">679438181095-gsl02kdi41ojf1di4alhvk88ogt6ollf.apps.googleusercontent.com</string>
     <string name="link_done">Email + Google Account соеденены</string>
     <string name="enter_to_g">У вас уже есть аккаунт с этим Email адресом</string>
+    <!-- Edit Activity -->
+    <string name="select_country">*Выберите страну</string>
+    <string name="select_city">*Выберите город</string>
 </resources>

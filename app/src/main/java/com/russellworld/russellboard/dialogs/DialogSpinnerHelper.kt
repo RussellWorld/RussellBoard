@@ -12,16 +12,17 @@ import com.russellworld.russellboard.utilits.CityHelper
 class DialogSpinnerHelper {
     fun showSpinnerDialog(context: Context, list: ArrayList<String>) {
         val builder = AlertDialog.Builder(context)
+        val dialog = builder.create()
         val rootElement = LayoutInflater.from(context).inflate(R.layout.spinner_layout, null)
-        val adapter = RcDialogSpinnerAdapter()
+        val adapter = RcDialogSpinnerAdapter(context, dialog)
         val rcView = rootElement.findViewById<RecyclerView>(R.id.rcSpiinnerView)
         val searchView = rootElement.findViewById<SearchView>(R.id.svSpinner)
         rcView.layoutManager = LinearLayoutManager(context)
         rcView.adapter = adapter
-        builder.setView(rootElement)
+        dialog.setView(rootElement)
         adapter.updateAdapter(list)
         setSearchView(adapter, list, searchView)
-        builder.show()
+        dialog.show()
     }
 
     private fun setSearchView(
