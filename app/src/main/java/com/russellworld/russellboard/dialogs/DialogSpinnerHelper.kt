@@ -4,18 +4,19 @@ import android.app.AlertDialog
 import android.content.Context
 import android.view.LayoutInflater
 import android.widget.SearchView
+import android.widget.TextView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.russellworld.russellboard.R
 import com.russellworld.russellboard.utilits.CityHelper
 
 class DialogSpinnerHelper {
-    fun showSpinnerDialog(context: Context, list: ArrayList<String>) {
+    fun showSpinnerDialog(context: Context, list: ArrayList<String>, tvSelection: TextView) {
         val builder = AlertDialog.Builder(context)
         val dialog = builder.create()
         val rootElement = LayoutInflater.from(context).inflate(R.layout.spinner_layout, null)
-        val adapter = RcDialogSpinnerAdapter(context, dialog)
-        val rcView = rootElement.findViewById<RecyclerView>(R.id.rcSpiinnerView)
+        val adapter = RcDialogSpinnerAdapter(tvSelection, dialog)
+        val rcView = rootElement.findViewById<RecyclerView>(R.id.rcSpinnerView)
         val searchView = rootElement.findViewById<SearchView>(R.id.svSpinner)
         rcView.layoutManager = LinearLayoutManager(context)
         rcView.adapter = adapter
