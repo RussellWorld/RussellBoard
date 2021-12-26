@@ -11,10 +11,12 @@ import com.fxn.utility.PermUtil
 import com.russellworld.russellboard.R
 import com.russellworld.russellboard.databinding.ActivityEditAddBinding
 import com.russellworld.russellboard.dialogs.DialogSpinnerHelper
+import com.russellworld.russellboard.fragments.FragmentCloseInterface
+import com.russellworld.russellboard.fragments.ImageListFragment
 import com.russellworld.russellboard.utilits.CityHelper
 import com.russellworld.russellboard.utilits.ImagePicker
 
-class EditAddActivity : AppCompatActivity() {
+class EditAddActivity : AppCompatActivity(), FragmentCloseInterface {
     lateinit var rootElement: ActivityEditAddBinding
     private val dialog = DialogSpinnerHelper()
 
@@ -44,7 +46,7 @@ class EditAddActivity : AppCompatActivity() {
         when (requestCode) {
             PermUtil.REQUEST_CODE_ASK_MULTIPLE_PERMISSIONS -> {
                 if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    ImagePicker.getImages(this)
+                    ImagePicker.getImages(this, 3)
                 } else {
                     Toast.makeText(
                         this,
@@ -81,6 +83,13 @@ class EditAddActivity : AppCompatActivity() {
     }
 
     fun onClickGetImages(view: View) {
-        ImagePicker.getImages(this)
+        rootElement.scrollViewMain.visibility = View.GONE
+        val fm = supportFragmentManager.beginTransaction()
+        .replace(R.id.placeHolder, ImageListFragment(this))
+        .commit()
+    }
+
+    override fun onFragClose() {
+        rootElement.scrollViewMain.visibility = View.VISIBLE
     }
 }
