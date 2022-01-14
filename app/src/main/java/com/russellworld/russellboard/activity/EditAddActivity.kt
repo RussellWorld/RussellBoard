@@ -33,6 +33,12 @@ class EditAddActivity : AppCompatActivity(), FragmentCloseInterface {
         if (resultCode == RESULT_OK && requestCode == ImagePicker.REQUEST_CODE_GET_IMAGES) {
             if (data != null) {
                 val returnValue = data.getStringArrayListExtra(Pix.IMAGE_RESULTS)
+                if (returnValue?.size!! > 1) {
+                    rootElement.scrollViewMain.visibility = View.GONE
+                    val fm = supportFragmentManager.beginTransaction()
+                        .replace(R.id.placeHolder, ImageListFragment(this, returnValue))
+                        .commit()
+                }
             }
         }
     }
@@ -83,10 +89,7 @@ class EditAddActivity : AppCompatActivity(), FragmentCloseInterface {
     }
 
     fun onClickGetImages(view: View) {
-        rootElement.scrollViewMain.visibility = View.GONE
-        val fm = supportFragmentManager.beginTransaction()
-        .replace(R.id.placeHolder, ImageListFragment(this))
-        .commit()
+        ImagePicker.getImages(this, 3)
     }
 
     override fun onFragClose() {

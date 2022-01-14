@@ -6,9 +6,17 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.russellworld.russellboard.R
 
-class ImageListFragment(private val fragCloseInterface: FragmentCloseInterface) : Fragment() {
+class ImageListFragment(
+    private val fragCloseInterface: FragmentCloseInterface,
+    private val newList: ArrayList<String>
+) :
+    Fragment() {
+
+    val adapter = SelectImageRvAdapter()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -23,6 +31,16 @@ class ImageListFragment(private val fragCloseInterface: FragmentCloseInterface) 
         val bBack = view.findViewById<Button>(R.id.btnBack).setOnClickListener {
             activity?.supportFragmentManager?.beginTransaction()?.remove(this)?.commit()
         }
+        val rcView = view.findViewById<RecyclerView>(R.id.rcViewSelectImage)
+        rcView.layoutManager = LinearLayoutManager(activity)
+        rcView.adapter = adapter
+
+        val updateList = ArrayList<SelectImageItem>()
+        for (n in 0 until newList.size) {
+            updateList.add(SelectImageItem(n.toString(), newList[n]))
+        }
+
+        adapter.updateAdapter(updateList)
     }
 
     override fun onDetach() {
