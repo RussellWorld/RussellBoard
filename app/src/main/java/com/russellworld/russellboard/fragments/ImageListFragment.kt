@@ -6,9 +6,11 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.russellworld.russellboard.R
+import com.russellworld.russellboard.utilits.ItemTouchMoveCallback
 
 class ImageListFragment(
     private val fragCloseInterface: FragmentCloseInterface,
@@ -17,6 +19,8 @@ class ImageListFragment(
     Fragment() {
 
     val adapter = SelectImageRvAdapter()
+    val dragCallback = ItemTouchMoveCallback(adapter)
+    val touchHelper = ItemTouchHelper(dragCallback)
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -32,6 +36,7 @@ class ImageListFragment(
             activity?.supportFragmentManager?.beginTransaction()?.remove(this)?.commit()
         }
         val rcView = view.findViewById<RecyclerView>(R.id.rcViewSelectImage)
+        touchHelper.attachToRecyclerView(rcView)
         rcView.layoutManager = LinearLayoutManager(activity)
         rcView.adapter = adapter
 

@@ -17,13 +17,24 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
-        android:id="@+id/ivContent"
+        android:id="@+id/inDrug"
         android:layout_width="0dp"
         android:layout_height="200dp"
         android:layout_margin="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tvTitile"
         tools:srcCompat="@tools:sample/backgrounds/scenic" />
+
+    <ImageButton
+        android:id="@+id/imageButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        app:layout_constraintStart_toStartOf="@+id/inDrug"
+        app:layout_constraintTop_toBottomOf="@+id/tvTitile"
+        app:srcCompat="@drawable/ic_drag" />
 </androidx.constraintlayout.widget.ConstraintLayout>
