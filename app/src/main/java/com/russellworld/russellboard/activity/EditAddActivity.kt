@@ -9,16 +9,19 @@ import androidx.appcompat.app.AppCompatActivity
 import com.fxn.pix.Pix
 import com.fxn.utility.PermUtil
 import com.russellworld.russellboard.R
+import com.russellworld.russellboard.adapters.ImageAdapter
 import com.russellworld.russellboard.databinding.ActivityEditAddBinding
 import com.russellworld.russellboard.dialogs.DialogSpinnerHelper
 import com.russellworld.russellboard.fragments.FragmentCloseInterface
 import com.russellworld.russellboard.fragments.ImageListFragment
+import com.russellworld.russellboard.fragments.SelectImageItem
 import com.russellworld.russellboard.utilits.CityHelper
 import com.russellworld.russellboard.utilits.ImagePicker
 
 class EditAddActivity : AppCompatActivity(), FragmentCloseInterface {
     lateinit var rootElement: ActivityEditAddBinding
     private val dialog = DialogSpinnerHelper()
+    private lateinit var imageAdapter: ImageAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -66,7 +69,8 @@ class EditAddActivity : AppCompatActivity(), FragmentCloseInterface {
     }
 
     private fun init() {
-
+        imageAdapter = ImageAdapter()
+        rootElement.vpImages.adapter = imageAdapter
     }
 
     //OnClocks
@@ -92,7 +96,8 @@ class EditAddActivity : AppCompatActivity(), FragmentCloseInterface {
         ImagePicker.getImages(this, 3)
     }
 
-    override fun onFragClose() {
+    override fun onFragClose(list: ArrayList<SelectImageItem>) {
         rootElement.scrollViewMain.visibility = View.VISIBLE
+        imageAdapter.update(list)
     }
 }

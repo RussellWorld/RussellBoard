@@ -12,7 +12,7 @@ import com.russellworld.russellboard.utilits.ItemTouchMoveCallback
 
 class SelectImageRvAdapter : RecyclerView.Adapter<SelectImageRvAdapter.ImageHolder>(),
     ItemTouchMoveCallback.ItemTouchAdapter {
-    private val mainArray = ArrayList<SelectImageItem>()
+    val mainArray = ArrayList<SelectImageItem>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ImageHolder {
         val view =
@@ -29,8 +29,15 @@ class SelectImageRvAdapter : RecyclerView.Adapter<SelectImageRvAdapter.ImageHold
     override fun onMove(startPos: Int, targetPas: Int) {
         val targetItem = mainArray[targetPas]
         mainArray[targetPas] = mainArray[startPos]
+        val titleStart = mainArray[targetPas].title
+        mainArray[targetPas].title = targetItem.title
         mainArray[startPos] = targetItem
+        mainArray[startPos].title = titleStart
         notifyItemMoved(startPos, targetPas)
+    }
+
+    override fun onClear() {
+        notifyDataSetChanged()
     }
 
     class ImageHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {

@@ -1,5 +1,5 @@
 package com.russellworld.russellboard.fragments
 
 interface FragmentCloseInterface {
-    fun onFragClose()
+    fun onFragClose(list: ArrayList<SelectImageItem>)
 }

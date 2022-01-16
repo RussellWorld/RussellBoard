@@ -50,6 +50,6 @@ class ImageListFragment(
 
     override fun onDetach() {
         super.onDetach()
-        fragCloseInterface.onFragClose()
+        fragCloseInterface.onFragClose(adapter.mainArray)
     }
 }
