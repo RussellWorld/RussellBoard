@@ -4,12 +4,13 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.russellworld.russellboard.R
+import com.russellworld.russellboard.databinding.FragmentListImageBinding
+import com.russellworld.russellboard.utilits.ImagePicker
 import com.russellworld.russellboard.utilits.ItemTouchMoveCallback
 
 class ImageListFragment(
@@ -18,34 +19,62 @@ class ImageListFragment(
 ) :
     Fragment() {
 
+    lateinit var rootElement: FragmentListImageBinding
     val adapter = SelectImageRvAdapter()
     val dragCallback = ItemTouchMoveCallback(adapter)
     val touchHelper = ItemTouchHelper(dragCallback)
+
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.fragment_list_image, container, false)
+        rootElement = FragmentListImageBinding.inflate(inflater)
+        return rootElement.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val bBack = view.findViewById<Button>(R.id.btnBack).setOnClickListener {
-            activity?.supportFragmentManager?.beginTransaction()?.remove(this)?.commit()
-        }
-        val rcView = view.findViewById<RecyclerView>(R.id.rcViewSelectImage)
-        touchHelper.attachToRecyclerView(rcView)
-        rcView.layoutManager = LinearLayoutManager(activity)
-        rcView.adapter = adapter
+        setUpToolbar()
+        touchHelper.attachToRecyclerView(rootElement.rcViewSelectImage)
+        rootElement.rcViewSelectImage.layoutManager = LinearLayoutManager(activity)
+        rootElement.rcViewSelectImage.adapter = adapter
 
         val updateList = ArrayList<SelectImageItem>()
         for (n in 0 until newList.size) {
             updateList.add(SelectImageItem(n.toString(), newList[n]))
         }
 
-        adapter.updateAdapter(updateList)
+        adapter.updateAdapter(updateList, true)
+    }
+
+    private fun setUpToolbar() {
+        rootElement.tbChooseMenu.inflateMenu(R.menu.choose_image_menu)
+        val addImageItem = rootElement.tbChooseMenu.menu.findItem(R.id.menu_choose_add_image)
+        val deleteItem = rootElement.tbChooseMenu.menu.findItem(R.id.menu_choose_delete_image)
+
+        rootElement.tbChooseMenu.setNavigationOnClickListener {
+            activity?.supportFragmentManager?.beginTransaction()?.remove(this)?.commit()
+        }
+        deleteItem.setOnMenuItemClickListener {
+            adapter.updateAdapter(ArrayList(), true)
+            true
+        }
+
+        addImageItem.setOnMenuItemClickListener {
+            val imageCount = ImagePicker.MAX_IMAGE_COUNT - adapter.mainArray.size
+            ImagePicker.getImages(activity as AppCompatActivity, imageCount)
+            true
+        }
+    }
+
+    fun updateAdapter(newList: ArrayList<String>) {
+        val updateList = ArrayList<SelectImageItem>()
+        for (n in adapter.mainArray.size until newList.size + adapter.mainArray.size) {
+            updateList.add(SelectImageItem(n.toString(), newList[n - adapter.mainArray.size]))
+        }
+        adapter.updateAdapter(updateList, false)
     }
 
     override fun onDetach() {

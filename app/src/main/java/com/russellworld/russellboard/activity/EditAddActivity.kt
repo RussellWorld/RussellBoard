@@ -19,7 +19,9 @@ import com.russellworld.russellboard.utilits.CityHelper
 import com.russellworld.russellboard.utilits.ImagePicker
 
 class EditAddActivity : AppCompatActivity(), FragmentCloseInterface {
+
     lateinit var rootElement: ActivityEditAddBinding
+    private var chooseImageFragment: ImageListFragment? = null
     private val dialog = DialogSpinnerHelper()
     private lateinit var imageAdapter: ImageAdapter
 
@@ -33,14 +35,23 @@ class EditAddActivity : AppCompatActivity(), FragmentCloseInterface {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
+
         if (resultCode == RESULT_OK && requestCode == ImagePicker.REQUEST_CODE_GET_IMAGES) {
+
             if (data != null) {
+
                 val returnValue = data.getStringArrayListExtra(Pix.IMAGE_RESULTS)
-                if (returnValue?.size!! > 1) {
+                if (returnValue?.size!! > 1 && chooseImageFragment == null) {
+
+                    chooseImageFragment = ImageListFragment(this, returnValue)
                     rootElement.scrollViewMain.visibility = View.GONE
                     val fm = supportFragmentManager.beginTransaction()
-                        .replace(R.id.placeHolder, ImageListFragment(this, returnValue))
-                        .commit()
+                    fm.replace(R.id.placeHolder, chooseImageFragment!!)
+                    fm.commit()
+
+                } else if (chooseImageFragment != null) {
+
+                    chooseImageFragment?.updateAdapter(returnValue)
                 }
             }
         }
@@ -99,5 +110,6 @@ class EditAddActivity : AppCompatActivity(), FragmentCloseInterface {
     override fun onFragClose(list: ArrayList<SelectImageItem>) {
         rootElement.scrollViewMain.visibility = View.VISIBLE
         imageAdapter.update(list)
+        chooseImageFragment = null
     }
 }
