@@ -29,7 +29,7 @@ class ImageListFragment(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         rootElement = FragmentListImageBinding.inflate(inflater)
         return rootElement.root
     }
@@ -40,13 +40,7 @@ class ImageListFragment(
         touchHelper.attachToRecyclerView(rootElement.rcViewSelectImage)
         rootElement.rcViewSelectImage.layoutManager = LinearLayoutManager(activity)
         rootElement.rcViewSelectImage.adapter = adapter
-
-        val updateList = ArrayList<SelectImageItem>()
-        for (n in 0 until newList.size) {
-            updateList.add(SelectImageItem(n.toString(), newList[n]))
-        }
-
-        adapter.updateAdapter(updateList, true)
+        adapter.updateAdapter(newList, true)
     }
 
     private fun setUpToolbar() {
@@ -70,11 +64,7 @@ class ImageListFragment(
     }
 
     fun updateAdapter(newList: ArrayList<String>) {
-        val updateList = ArrayList<SelectImageItem>()
-        for (n in adapter.mainArray.size until newList.size + adapter.mainArray.size) {
-            updateList.add(SelectImageItem(n.toString(), newList[n - adapter.mainArray.size]))
-        }
-        adapter.updateAdapter(updateList, false)
+        adapter.updateAdapter(newList, false)
     }
 
     override fun onDetach() {

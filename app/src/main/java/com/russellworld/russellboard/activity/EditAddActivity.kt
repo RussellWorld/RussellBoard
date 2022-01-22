@@ -14,7 +14,6 @@ import com.russellworld.russellboard.databinding.ActivityEditAddBinding
 import com.russellworld.russellboard.dialogs.DialogSpinnerHelper
 import com.russellworld.russellboard.fragments.FragmentCloseInterface
 import com.russellworld.russellboard.fragments.ImageListFragment
-import com.russellworld.russellboard.fragments.SelectImageItem
 import com.russellworld.russellboard.utilits.CityHelper
 import com.russellworld.russellboard.utilits.ImagePicker
 
@@ -43,11 +42,7 @@ class EditAddActivity : AppCompatActivity(), FragmentCloseInterface {
                 val returnValue = data.getStringArrayListExtra(Pix.IMAGE_RESULTS)
                 if (returnValue?.size!! > 1 && chooseImageFragment == null) {
 
-                    chooseImageFragment = ImageListFragment(this, returnValue)
-                    rootElement.scrollViewMain.visibility = View.GONE
-                    val fm = supportFragmentManager.beginTransaction()
-                    fm.replace(R.id.placeHolder, chooseImageFragment!!)
-                    fm.commit()
+                    openChooseImageFragment(returnValue)
 
                 } else if (chooseImageFragment != null) {
 
@@ -55,6 +50,14 @@ class EditAddActivity : AppCompatActivity(), FragmentCloseInterface {
                 }
             }
         }
+    }
+
+    private fun openChooseImageFragment(newList: ArrayList<String>) {
+        chooseImageFragment = ImageListFragment(this, newList)
+        rootElement.scrollViewMain.visibility = View.GONE
+        val fm = supportFragmentManager.beginTransaction()
+        fm.replace(R.id.placeHolder, chooseImageFragment!!)
+        fm.commit()
     }
 
     override fun onRequestPermissionsResult(
@@ -104,10 +107,14 @@ class EditAddActivity : AppCompatActivity(), FragmentCloseInterface {
     }
 
     fun onClickGetImages(view: View) {
+        if (imageAdapter.mainArray.size == 0){
         ImagePicker.getImages(this, 3)
+    } else {
+        openChooseImageFragment(imageAdapter.mainArray)
+        }
     }
 
-    override fun onFragClose(list: ArrayList<SelectImageItem>) {
+    override fun onFragClose(list: ArrayList<String>) {
         rootElement.scrollViewMain.visibility = View.VISIBLE
         imageAdapter.update(list)
         chooseImageFragment = null

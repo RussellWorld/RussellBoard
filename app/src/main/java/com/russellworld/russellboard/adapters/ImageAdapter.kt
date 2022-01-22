@@ -1,5 +1,6 @@
 package com.russellworld.russellboard.adapters
 
+import android.annotation.SuppressLint
 import android.net.Uri
 import android.view.LayoutInflater
 import android.view.View
@@ -7,10 +8,9 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
 import com.russellworld.russellboard.R
-import com.russellworld.russellboard.fragments.SelectImageItem
 
 class ImageAdapter : RecyclerView.Adapter<ImageAdapter.ImageHolder>() {
-    private val mainArray = ArrayList<SelectImageItem>()
+    val mainArray = ArrayList<String>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ImageHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.image_adapter_item, parent, false)
@@ -18,7 +18,7 @@ class ImageAdapter : RecyclerView.Adapter<ImageAdapter.ImageHolder>() {
     }
 
     override fun onBindViewHolder(holder: ImageHolder, position: Int) {
-        holder.setData(mainArray[position].imageUri)
+        holder.setData(mainArray[position])
     }
 
     override fun getItemCount(): Int = mainArray.size
@@ -32,7 +32,8 @@ class ImageAdapter : RecyclerView.Adapter<ImageAdapter.ImageHolder>() {
         }
     }
 
-    fun update(newList: ArrayList<SelectImageItem>) {
+    @SuppressLint("NotifyDataSetChanged")
+    fun update(newList: ArrayList<String>) {
         mainArray.clear()
         mainArray.addAll(newList)
         notifyDataSetChanged()
