@@ -45,13 +45,19 @@ class EditAddActivity : AppCompatActivity(), FragmentCloseInterface {
 
                     openChooseImageFragment(returnValue)
 
+                } else if (returnValue.size == 1 && chooseImageFragment == null) {
+
+                    imageAdapter.update(returnValue)
+
                 } else if (chooseImageFragment != null) {
 
-                    chooseImageFragment?.updateAdapter(returnValue)
-                }
+                chooseImageFragment?.updateAdapter(returnValue)
+            }
+
             }
         } else if (resultCode == RESULT_OK && requestCode == ImagePicker.REQUEST_CODE_GET_SINGLE_IMAGE) {
             if (data != null) {
+
                 val uri = data.getStringArrayListExtra(Pix.IMAGE_RESULTS)
                 chooseImageFragment?.setSingleImage(uri?.get(0)!!, editImagePos)
             }
