@@ -15,6 +15,7 @@ import com.russellworld.russellboard.dialogs.DialogSpinnerHelper
 import com.russellworld.russellboard.fragments.FragmentCloseInterface
 import com.russellworld.russellboard.fragments.ImageListFragment
 import com.russellworld.russellboard.utilits.CityHelper
+import com.russellworld.russellboard.utilits.ImageManager
 import com.russellworld.russellboard.utilits.ImagePicker
 
 class EditAddActivity : AppCompatActivity(), FragmentCloseInterface {
@@ -47,7 +48,8 @@ class EditAddActivity : AppCompatActivity(), FragmentCloseInterface {
 
                 } else if (returnValue.size == 1 && chooseImageFragment == null) {
 
-                    imageAdapter.update(returnValue)
+                    //imageAdapter.update(returnValue)
+                    val tempList = ImageManager.getImageSize(returnValue[0])
 
                 } else if (chooseImageFragment != null) {
 
