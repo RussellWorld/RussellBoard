@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.russellworld.russellboard.R
 import com.russellworld.russellboard.databinding.FragmentListImageBinding
+import com.russellworld.russellboard.utilits.ImageManager
 import com.russellworld.russellboard.utilits.ImagePicker
 import com.russellworld.russellboard.utilits.ItemTouchMoveCallback
 
@@ -41,7 +42,8 @@ class ImageListFragment(
         rootElement.rcViewSelectImage.layoutManager = LinearLayoutManager(activity)
 
         rootElement.rcViewSelectImage.adapter = adapter
-        adapter.updateAdapter(newList, true)
+        ImageManager.imageResize(newList)
+        //adapter.updateAdapter(newList, true)
     }
 
     private fun setUpToolbar() {
