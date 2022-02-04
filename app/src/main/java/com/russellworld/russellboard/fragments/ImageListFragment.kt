@@ -13,6 +13,10 @@ import com.russellworld.russellboard.databinding.FragmentListImageBinding
 import com.russellworld.russellboard.utilits.ImageManager
 import com.russellworld.russellboard.utilits.ImagePicker
 import com.russellworld.russellboard.utilits.ItemTouchMoveCallback
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.launch
 
 class ImageListFragment(
     private val fragCloseInterface: FragmentCloseInterface,
@@ -24,6 +28,7 @@ class ImageListFragment(
     val adapter = SelectImageRvAdapter()
     val dragCallback = ItemTouchMoveCallback(adapter)
     val touchHelper = ItemTouchHelper(dragCallback)
+    private lateinit var job: Job
 
 
     override fun onCreateView(
@@ -42,7 +47,9 @@ class ImageListFragment(
         rootElement.rcViewSelectImage.layoutManager = LinearLayoutManager(activity)
 
         rootElement.rcViewSelectImage.adapter = adapter
-        ImageManager.imageResize(newList)
+        job = CoroutineScope(Dispatchers.Main).launch {
+            ImageManager.imageResize(newList) }
+
         //adapter.updateAdapter(newList, true)
     }
 
@@ -74,7 +81,7 @@ class ImageListFragment(
         adapter.updateAdapter(newList, false)
     }
 
-    fun setSingleImage(uri: String, pos: Int){
+    fun setSingleImage(uri: String, pos: Int) {
         adapter.mainArray[pos] = uri
         adapter.notifyDataSetChanged()
     }
@@ -82,5 +89,6 @@ class ImageListFragment(
     override fun onDetach() {
         super.onDetach()
         fragCloseInterface.onFragClose(adapter.mainArray)
+        job.cancel()
     }
 }

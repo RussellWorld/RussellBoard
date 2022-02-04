@@ -2,6 +2,8 @@ package com.russellworld.russellboard.utilits
 
 import android.graphics.BitmapFactory
 import androidx.exifinterface.media.ExifInterface
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import java.io.File
 
 object ImageManager {
@@ -37,7 +39,7 @@ object ImageManager {
         return rotation
     }
 
-    fun imageResize(uris: ArrayList<String>) {
+    suspend fun imageResize(uris: ArrayList<String>): String = withContext(Dispatchers.IO){
         val tempList = ArrayList<ArrayList<Int>>()
         for (n in uris.indices) {
             val size = getImageSize(uris[n])
@@ -57,7 +59,7 @@ object ImageManager {
                 }
             }
         }
-
+        return@withContext "Done"
 
     }
 }

@@ -53,8 +53,8 @@ class EditAddActivity : AppCompatActivity(), FragmentCloseInterface {
 
                 } else if (chooseImageFragment != null) {
 
-                chooseImageFragment?.updateAdapter(returnValue)
-            }
+                    chooseImageFragment?.updateAdapter(returnValue)
+                }
 
             }
         } else if (resultCode == RESULT_OK && requestCode == ImagePicker.REQUEST_CODE_GET_SINGLE_IMAGE) {
