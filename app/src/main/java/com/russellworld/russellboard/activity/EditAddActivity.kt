@@ -2,6 +2,7 @@ package com.russellworld.russellboard.activity
 
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.graphics.Bitmap
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
@@ -15,7 +16,6 @@ import com.russellworld.russellboard.dialogs.DialogSpinnerHelper
 import com.russellworld.russellboard.fragments.FragmentCloseInterface
 import com.russellworld.russellboard.fragments.ImageListFragment
 import com.russellworld.russellboard.utilits.CityHelper
-import com.russellworld.russellboard.utilits.ImageManager
 import com.russellworld.russellboard.utilits.ImagePicker
 
 class EditAddActivity : AppCompatActivity(), FragmentCloseInterface {
@@ -46,17 +46,12 @@ class EditAddActivity : AppCompatActivity(), FragmentCloseInterface {
 
                     openChooseImageFragment(returnValue)
 
-                } else if (returnValue.size == 1 && chooseImageFragment == null) {
-
-                    //imageAdapter.update(returnValue)
-                    val tempList = ImageManager.getImageSize(returnValue[0])
-
                 } else if (chooseImageFragment != null) {
 
                     chooseImageFragment?.updateAdapter(returnValue)
                 }
-
             }
+
         } else if (resultCode == RESULT_OK && requestCode == ImagePicker.REQUEST_CODE_GET_SINGLE_IMAGE) {
             if (data != null) {
 
@@ -66,7 +61,7 @@ class EditAddActivity : AppCompatActivity(), FragmentCloseInterface {
         }
     }
 
-    private fun openChooseImageFragment(newList: ArrayList<String>) {
+    private fun openChooseImageFragment(newList: ArrayList<String>?) {
         chooseImageFragment = ImageListFragment(this, newList)
         rootElement.scrollViewMain.visibility = View.GONE
         val fm = supportFragmentManager.beginTransaction()
@@ -124,11 +119,12 @@ class EditAddActivity : AppCompatActivity(), FragmentCloseInterface {
         if (imageAdapter.mainArray.size == 0) {
             ImagePicker.getImages(this, 3, ImagePicker.REQUEST_CODE_GET_IMAGES)
         } else {
-            openChooseImageFragment(imageAdapter.mainArray)
+            openChooseImageFragment(null)
+            chooseImageFragment?.updateAdapterFromEdit(imageAdapter.mainArray)
         }
     }
 
-    override fun onFragClose(list: ArrayList<String>) {
+    override fun onFragClose(list: ArrayList<Bitmap>) {
         rootElement.scrollViewMain.visibility = View.VISIBLE
         imageAdapter.update(list)
         chooseImageFragment = null

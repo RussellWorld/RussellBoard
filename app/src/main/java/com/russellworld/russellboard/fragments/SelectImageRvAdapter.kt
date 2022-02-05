@@ -2,7 +2,7 @@ package com.russellworld.russellboard.fragments
 
 import android.annotation.SuppressLint
 import android.content.Context
-import android.net.Uri
+import android.graphics.Bitmap
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -17,7 +17,7 @@ import com.russellworld.russellboard.utilits.ItemTouchMoveCallback
 
 class SelectImageRvAdapter : RecyclerView.Adapter<SelectImageRvAdapter.ImageHolder>(),
     ItemTouchMoveCallback.ItemTouchAdapter {
-    val mainArray = ArrayList<String>()
+    val mainArray = ArrayList<Bitmap>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ImageHolder {
         val view =
@@ -51,10 +51,12 @@ class SelectImageRvAdapter : RecyclerView.Adapter<SelectImageRvAdapter.ImageHold
         lateinit var imEditImage: ImageButton
         lateinit var imDeleteImage: ImageButton
 
-        fun setData(item: String) {
+        fun setData(bitMap: Bitmap) {
             tvTitle = itemView.findViewById(R.id.tvTitile)
             image = itemView.findViewById(R.id.inDrug)
+            imDeleteImage = itemView.findViewById(R.id.btnDeleteSelect)
             imEditImage = itemView.findViewById(R.id.btmEditImage)
+
             imEditImage.setOnClickListener {
                 ImagePicker.getImages(
                     context as EditAddActivity,
@@ -63,23 +65,21 @@ class SelectImageRvAdapter : RecyclerView.Adapter<SelectImageRvAdapter.ImageHold
                 )
                 context.editImagePos = adapterPosition
             }
-            imDeleteImage = itemView.findViewById(R.id.btnDeleteSelect)
+
             imDeleteImage.setOnClickListener {
 
                 adapter.mainArray.removeAt(adapterPosition)
                 adapter.notifyItemRemoved(adapterPosition)
-                for (n in 0 until adapter.mainArray.size) {
-                    adapter.notifyItemChanged(n)
-                }
+                for (n in 0 until adapter.mainArray.size)  adapter.notifyItemChanged(n)
             }
 
             tvTitle.text = context.resources.getStringArray(R.array.title_array)[adapterPosition]
-            image.setImageURI(Uri.parse(item))
+            image.setImageBitmap(bitMap)
         }
     }
 
     @SuppressLint("NotifyDataSetChanged")
-    fun updateAdapter(newList: ArrayList<String>, needClear: Boolean) {
+    fun updateAdapter(newList: ArrayList<Bitmap>, needClear: Boolean) {
         if (needClear) mainArray.clear()
         mainArray.addAll(newList)
         notifyDataSetChanged()

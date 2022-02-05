@@ -1,15 +1,17 @@
 package com.russellworld.russellboard.utilits
 
+import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import androidx.exifinterface.media.ExifInterface
+import com.squareup.picasso.Picasso
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import java.io.File
 
 object ImageManager {
     private const val MAX_IMAGE_SIZE = 1280
-    const val WIDTH = 0
-    const val HEIGHT = 1
+    private const val WIDTH = 0
+    private const val HEIGHT = 1
 
     fun getImageSize(uri: String): ArrayList<Int> {
         val options = BitmapFactory.Options().apply {
@@ -39,8 +41,9 @@ object ImageManager {
         return rotation
     }
 
-    suspend fun imageResize(uris: ArrayList<String>): String = withContext(Dispatchers.IO){
+    suspend fun imageResize(uris: ArrayList<String>): ArrayList<Bitmap> = withContext(Dispatchers.IO) {
         val tempList = ArrayList<ArrayList<Int>>()
+        val bitmapList = ArrayList<Bitmap>()
         for (n in uris.indices) {
             val size = getImageSize(uris[n])
             val imageRatio = size[WIDTH].toFloat() / size[HEIGHT].toFloat()
@@ -59,7 +62,14 @@ object ImageManager {
                 }
             }
         }
-        return@withContext "Done"
+        for (i in uris.indices) {
+             kotlin.runCatching {
+                bitmapList.add(
+                    Picasso.get().load(File(uris[i])).resize(tempList[i][WIDTH], tempList[i][HEIGHT]).get()
+                )
+            }
+        }
+        return@withContext bitmapList
 
     }
 }

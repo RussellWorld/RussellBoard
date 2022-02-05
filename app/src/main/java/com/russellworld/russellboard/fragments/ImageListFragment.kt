@@ -1,5 +1,6 @@
 package com.russellworld.russellboard.fragments
 
+import android.graphics.Bitmap
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -20,7 +21,7 @@ import kotlinx.coroutines.launch
 
 class ImageListFragment(
     private val fragCloseInterface: FragmentCloseInterface,
-    private val newList: ArrayList<String>
+    private val newList: ArrayList<String>?
 ) :
     Fragment() {
 
@@ -28,7 +29,7 @@ class ImageListFragment(
     val adapter = SelectImageRvAdapter()
     val dragCallback = ItemTouchMoveCallback(adapter)
     val touchHelper = ItemTouchHelper(dragCallback)
-    private lateinit var job: Job
+    private  var job: Job? = null
 
 
     override fun onCreateView(
@@ -45,12 +46,18 @@ class ImageListFragment(
         setUpToolbar()
         touchHelper.attachToRecyclerView(rootElement.rcViewSelectImage)
         rootElement.rcViewSelectImage.layoutManager = LinearLayoutManager(activity)
-
         rootElement.rcViewSelectImage.adapter = adapter
-        job = CoroutineScope(Dispatchers.Main).launch {
-            ImageManager.imageResize(newList) }
 
-        //adapter.updateAdapter(newList, true)
+        if (newList != null) {
+            job = CoroutineScope(Dispatchers.Main).launch {
+                val bitmapList = ImageManager.imageResize(newList)
+                adapter.updateAdapter(bitmapList, true)
+            }
+        }
+    }
+
+    fun updateAdapterFromEdit(bitmapList: ArrayList<Bitmap>){
+        adapter.updateAdapter(bitmapList, true)
     }
 
     private fun setUpToolbar() {
@@ -78,17 +85,24 @@ class ImageListFragment(
     }
 
     fun updateAdapter(newList: ArrayList<String>) {
-        adapter.updateAdapter(newList, false)
+        job = CoroutineScope(Dispatchers.Main).launch {
+            val bitmapList = ImageManager.imageResize(newList)
+            adapter.updateAdapter(bitmapList, false)
+        }
     }
 
     fun setSingleImage(uri: String, pos: Int) {
-        adapter.mainArray[pos] = uri
-        adapter.notifyDataSetChanged()
+        job = CoroutineScope(Dispatchers.Main).launch {
+            val bitmapList = ImageManager.imageResize(arrayListOf(uri))
+            adapter.mainArray[pos] = bitmapList[0]
+            adapter.notifyDataSetChanged()
+        }
     }
 
     override fun onDetach() {
+
         super.onDetach()
         fragCloseInterface.onFragClose(adapter.mainArray)
-        job.cancel()
+        job?.cancel()
     }
 }
