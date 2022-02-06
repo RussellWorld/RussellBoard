@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageButton
 import android.widget.ImageView
+import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.russellworld.russellboard.R
@@ -46,10 +47,10 @@ class SelectImageRvAdapter : RecyclerView.Adapter<SelectImageRvAdapter.ImageHold
 
     class ImageHolder(itemView: View, val context: Context, val adapter: SelectImageRvAdapter) :
         RecyclerView.ViewHolder(itemView) {
-        lateinit var tvTitle: TextView
-        lateinit var image: ImageView
-        lateinit var imEditImage: ImageButton
-        lateinit var imDeleteImage: ImageButton
+        private lateinit var tvTitle: TextView
+        private lateinit var image: ImageView
+        private lateinit var imEditImage: ImageButton
+        private lateinit var imDeleteImage: ImageButton
 
         fun setData(bitMap: Bitmap) {
             tvTitle = itemView.findViewById(R.id.tvTitile)
@@ -64,13 +65,14 @@ class SelectImageRvAdapter : RecyclerView.Adapter<SelectImageRvAdapter.ImageHold
                     ImagePicker.REQUEST_CODE_GET_SINGLE_IMAGE
                 )
                 context.editImagePos = adapterPosition
+
             }
 
             imDeleteImage.setOnClickListener {
 
                 adapter.mainArray.removeAt(adapterPosition)
                 adapter.notifyItemRemoved(adapterPosition)
-                for (n in 0 until adapter.mainArray.size)  adapter.notifyItemChanged(n)
+                for (n in 0 until adapter.mainArray.size) adapter.notifyItemChanged(n)
             }
 
             tvTitle.text = context.resources.getStringArray(R.array.title_array)[adapterPosition]
