@@ -7,7 +7,6 @@ import android.os.Bundle
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import com.fxn.pix.Pix
 import com.fxn.utility.PermUtil
 import com.russellworld.russellboard.R
 import com.russellworld.russellboard.adapters.ImageAdapter
@@ -21,9 +20,9 @@ import com.russellworld.russellboard.utilits.ImagePicker
 class EditAddActivity : AppCompatActivity(), FragmentCloseInterface {
 
     lateinit var rootElement: ActivityEditAddBinding
-    private var chooseImageFragment: ImageListFragment? = null
-    private val dialog = DialogSpinnerHelper()
-    private lateinit var imageAdapter: ImageAdapter
+    var chooseImageFragment: ImageListFragment? = null
+    val dialog = DialogSpinnerHelper()
+    lateinit var imageAdapter: ImageAdapter
     var editImagePos = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -37,31 +36,11 @@ class EditAddActivity : AppCompatActivity(), FragmentCloseInterface {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
-        if (resultCode == RESULT_OK && requestCode == ImagePicker.REQUEST_CODE_GET_IMAGES) {
+        ImagePicker.showSelectedImages(resultCode, resultCode, data, this)
 
-            if (data != null) {
-
-                val returnValue = data.getStringArrayListExtra(Pix.IMAGE_RESULTS)
-                if (returnValue?.size!! > 1 && chooseImageFragment == null) {
-
-                    openChooseImageFragment(returnValue)
-
-                } else if (chooseImageFragment != null) {
-
-                    chooseImageFragment?.updateAdapter(returnValue)
-                }
-            }
-
-        } else if (resultCode == RESULT_OK && requestCode == ImagePicker.REQUEST_CODE_GET_SINGLE_IMAGE) {
-            if (data != null) {
-
-                val uri = data.getStringArrayListExtra(Pix.IMAGE_RESULTS)
-                chooseImageFragment?.setSingleImage(uri?.get(0)!!, editImagePos)
-            }
-        }
     }
 
-    private fun openChooseImageFragment(newList: ArrayList<String>?) {
+    fun openChooseImageFragment(newList: ArrayList<String>?) {
         chooseImageFragment = ImageListFragment(this, newList)
         rootElement.scrollViewMain.visibility = View.GONE
         val fm = supportFragmentManager.beginTransaction()
@@ -96,7 +75,7 @@ class EditAddActivity : AppCompatActivity(), FragmentCloseInterface {
         rootElement.vpImages.adapter = imageAdapter
     }
 
-    //OnClocks
+
     fun onClickSelectCountry(view: View) {
         val listCountry = CityHelper.getAllCountries(this)
         dialog.showSpinnerDialog(this, listCountry, rootElement.tvCountry)

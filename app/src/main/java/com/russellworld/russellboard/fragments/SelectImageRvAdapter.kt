@@ -8,7 +8,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageButton
 import android.widget.ImageView
-import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.russellworld.russellboard.R
@@ -53,8 +52,8 @@ class SelectImageRvAdapter : RecyclerView.Adapter<SelectImageRvAdapter.ImageHold
         private lateinit var imDeleteImage: ImageButton
 
         fun setData(bitMap: Bitmap) {
-            tvTitle = itemView.findViewById(R.id.tvTitile)
-            image = itemView.findViewById(R.id.inDrug)
+            tvTitle = itemView.findViewById(R.id.tvTitle)
+            image = itemView.findViewById(R.id.ImageViewDrug)
             imDeleteImage = itemView.findViewById(R.id.btnDeleteSelect)
             imEditImage = itemView.findViewById(R.id.btmEditImage)
 

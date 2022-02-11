@@ -3,10 +3,17 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Users/User/AndroidStudioProjects/RussellBoard/app/src/main/res/drawable/edit_image_bg.xml" value="0.131" />
+        <entry key="..\:/Users/User/AndroidStudioProjects/RussellBoard/app/src/main/res/drawable/ic_add.xml" value="0.1" />
+        <entry key="..\:/Users/User/AndroidStudioProjects/RussellBoard/app/src/main/res/drawable/ic_delete.xml" value="0.1" />
+        <entry key="..\:/Users/User/AndroidStudioProjects/RussellBoard/app/src/main/res/drawable/ic_delete_green.xml" value="0.1" />
+        <entry key="..\:/Users/User/AndroidStudioProjects/RussellBoard/app/src/main/res/drawable/ic_drag.xml" value="0.1" />
+        <entry key="..\:/Users/User/AndroidStudioProjects/RussellBoard/app/src/main/res/drawable/ic_edit.xml" value="0.1" />
+        <entry key="..\:/Users/User/AndroidStudioProjects/RussellBoard/app/src/main/res/drawable/ic_new_add.xml" value="0.1" />
         <entry key="..\:/Users/User/AndroidStudioProjects/RussellBoard/app/src/main/res/layout/activity_edit_add.xml" value="0.264" />
         <entry key="..\:/Users/User/AndroidStudioProjects/RussellBoard/app/src/main/res/layout/activity_main.xml" value="0.264" />
         <entry key="..\:/Users/User/AndroidStudioProjects/RussellBoard/app/src/main/res/layout/fragment_list_image.xml" value="0.264" />
-        <entry key="..\:/Users/User/AndroidStudioProjects/RussellBoard/app/src/main/res/layout/fragment_select_image_item.xml" value="0.4" />
+        <entry key="..\:/Users/User/AndroidStudioProjects/RussellBoard/app/src/main/res/layout/fragment_select_image_item.xml" value="0.72" />
         <entry key="..\:/Users/User/AndroidStudioProjects/RussellBoard/app/src/main/res/layout/image_adapter_item.xml" value="0.21203703703703702" />
         <entry key="..\:/Users/User/AndroidStudioProjects/RussellBoard/app/src/main/res/layout/main_content.xml" value="0.21203703703703702" />
         <entry key="..\:/Users/User/AndroidStudioProjects/RussellBoard/app/src/main/res/layout/nav_header_main.xml" value="0.4" />
