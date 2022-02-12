@@ -2,6 +2,7 @@ package com.russellworld.russellboard.utilits
 
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import android.widget.ImageView
 import androidx.exifinterface.media.ExifInterface
 import com.squareup.picasso.Picasso
 import kotlinx.coroutines.Dispatchers
@@ -41,6 +42,14 @@ object ImageManager {
         return rotation
     }
 
+    fun chooseScaleType(imageView: ImageView, bitmap: Bitmap) {
+        if (bitmap.width > bitmap.height) {
+            imageView.scaleType = ImageView.ScaleType.CENTER_CROP
+        } else {
+            imageView.scaleType = ImageView.ScaleType.CENTER_INSIDE
+        }
+    }
+
     suspend fun imageResize(uris: ArrayList<String>): ArrayList<Bitmap> = withContext(Dispatchers.IO) {
         val tempList = ArrayList<ArrayList<Int>>()
         val bitmapList = ArrayList<Bitmap>()
@@ -63,7 +72,7 @@ object ImageManager {
             }
         }
         for (i in uris.indices) {
-             kotlin.runCatching {
+            kotlin.runCatching {
                 bitmapList.add(
                     Picasso.get().load(File(uris[i])).resize(tempList[i][WIDTH], tempList[i][HEIGHT]).get()
                 )

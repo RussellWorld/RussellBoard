@@ -26,13 +26,13 @@
                 android:layout_marginEnd="16dp"
                 android:text="TextView"
                 android:textColor="@color/black"
-                app:layout_constraintEnd_toEndOf="@id/ImageViewDrug"
+                app:layout_constraintEnd_toEndOf="@id/imageViewDrug"
                 app:layout_constraintHorizontal_bias="1.0"
                 app:layout_constraintStart_toEndOf="@id/btnDrug"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <ImageView
-                android:id="@+id/ImageViewDrug"
+                android:id="@+id/imageViewDrug"
                 android:layout_width="0dp"
                 android:layout_height="200dp"
                 android:layout_margin="8dp"
@@ -51,8 +51,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@android:color/transparent"
-                app:layout_constraintBottom_toTopOf="@+id/ImageViewDrug"
-                app:layout_constraintStart_toStartOf="@+id/ImageViewDrug"
+                app:layout_constraintBottom_toTopOf="@+id/imageViewDrug"
+                app:layout_constraintStart_toStartOf="@+id/imageViewDrug"
                 app:srcCompat="@drawable/ic_drag" />
 
             <LinearLayout
@@ -63,8 +63,8 @@
                 android:background="@drawable/edit_image_bg"
                 android:gravity="center"
                 android:orientation="horizontal"
-                app:layout_constraintBottom_toBottomOf="@+id/ImageViewDrug"
-                app:layout_constraintEnd_toEndOf="@+id/ImageViewDrug">
+                app:layout_constraintBottom_toBottomOf="@+id/imageViewDrug"
+                app:layout_constraintEnd_toEndOf="@+id/imageViewDrug">
 
                 <ImageButton
                     android:id="@+id/btnDeleteSelect"
@@ -92,11 +92,11 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:visibility="gone"
-                app:layout_constraintBottom_toBottomOf="@+id/ImageViewDrug"
-                app:layout_constraintEnd_toStartOf="@+id/btnDeleteSelect"
+                app:layout_constraintBottom_toBottomOf="@+id/imageViewDrug"
+                app:layout_constraintEnd_toEndOf="@+id/imageViewDrug"
                 app:layout_constraintHorizontal_bias="0.506"
-                app:layout_constraintStart_toStartOf="@+id/ImageViewDrug"
-                app:layout_constraintTop_toTopOf="@+id/ImageViewDrug" />
+                app:layout_constraintStart_toStartOf="@+id/imageViewDrug"
+                app:layout_constraintTop_toTopOf="@+id/imageViewDrug" />
 
             <LinearLayout
                 android:layout_width="0dp"
