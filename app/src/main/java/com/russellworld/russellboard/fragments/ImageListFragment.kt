@@ -3,18 +3,14 @@ package com.russellworld.russellboard.fragments
 import android.app.Activity
 import android.graphics.Bitmap
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
-import android.view.ViewGroup
 import android.widget.ProgressBar
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.get
-import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.russellworld.russellboard.R
-import com.russellworld.russellboard.databinding.FragmentListImageBinding
 import com.russellworld.russellboard.dialoghelper.ProgressDialog
 import com.russellworld.russellboard.utilits.AdapterCallback
 import com.russellworld.russellboard.utilits.ImageManager
@@ -29,10 +25,9 @@ class ImageListFragment(
     private val fragCloseInterface: FragmentCloseInterface,
     private val newList: ArrayList<String>?
 ) :
-    Fragment(),
+    BaseSelectImageFragment(),
     AdapterCallback {
 
-    lateinit var rootElement: FragmentListImageBinding
     val adapter = SelectImageRvAdapter(this)
     val dragCallback = ItemTouchMoveCallback(adapter)
     val touchHelper = ItemTouchHelper(dragCallback)
@@ -40,25 +35,19 @@ class ImageListFragment(
     private var addImageItem: MenuItem? = null
 
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        rootElement = FragmentListImageBinding.inflate(inflater)
-        return rootElement.root
-    }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setUpToolbar()
-        touchHelper.attachToRecyclerView(rootElement.rcViewSelectImage)
-        rootElement.rcViewSelectImage.layoutManager = LinearLayoutManager(activity)
-        rootElement.rcViewSelectImage.adapter = adapter
+        rootElement.apply {
+            touchHelper.attachToRecyclerView(rcViewSelectImage)
+            rcViewSelectImage.layoutManager = LinearLayoutManager(activity)
+            rcViewSelectImage.adapter = adapter
 
-        if (newList != null) {
-            resizeSelectedImage(newList, true)
+            if (newList != null) {
+                resizeSelectedImage(newList, true)
+            }
         }
+
     }
 
     override fun onItemDelete() {
@@ -70,27 +59,31 @@ class ImageListFragment(
     }
 
     private fun setUpToolbar() {
-        rootElement.tbChooseMenu.inflateMenu(R.menu.choose_image_menu)
-        addImageItem = rootElement.tbChooseMenu.menu.findItem(R.id.menu_choose_add_image)
-        val deleteItem = rootElement.tbChooseMenu.menu.findItem(R.id.menu_choose_delete_image)
+        rootElement.apply {
 
-        rootElement.tbChooseMenu.setNavigationOnClickListener {
-            activity?.supportFragmentManager?.beginTransaction()?.remove(this)?.commit()
-        }
-        deleteItem.setOnMenuItemClickListener {
-            adapter.updateAdapter(ArrayList(), true)
-            addImageItem?.isVisible = true
-            true
-        }
+            tbChooseMenu.inflateMenu(R.menu.choose_image_menu)
+            addImageItem = tbChooseMenu.menu.findItem(R.id.menu_choose_add_image)
+            val deleteItem = tbChooseMenu.menu.findItem(R.id.menu_choose_delete_image)
 
-        addImageItem?.setOnMenuItemClickListener {
-            val imageCount = ImagePicker.MAX_IMAGE_COUNT - adapter.mainArray.size
-            ImagePicker.getImages(
-                activity as AppCompatActivity,
-                imageCount,
-                ImagePicker.REQUEST_CODE_GET_IMAGES
-            )
-            true
+            tbChooseMenu.setNavigationOnClickListener {
+                activity?.supportFragmentManager
+                    ?.beginTransaction()?.remove(this@ImageListFragment)?.commit()
+            }
+            deleteItem.setOnMenuItemClickListener {
+                adapter.updateAdapter(ArrayList(), true)
+                addImageItem?.isVisible = true
+                true
+            }
+
+            addImageItem?.setOnMenuItemClickListener {
+                val imageCount = ImagePicker.MAX_IMAGE_COUNT - adapter.mainArray.size
+                ImagePicker.getImages(
+                    activity as AppCompatActivity,
+                    imageCount,
+                    ImagePicker.REQUEST_CODE_GET_IMAGES
+                )
+                true
+            }
         }
     }
 
