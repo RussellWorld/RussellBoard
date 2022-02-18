@@ -3,14 +3,17 @@ package com.russellworld.russellboard.fragments
 import android.app.Activity
 import android.graphics.Bitmap
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
+import android.view.ViewGroup
 import android.widget.ProgressBar
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.get
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.russellworld.russellboard.R
+import com.russellworld.russellboard.databinding.FragmentListImageBinding
 import com.russellworld.russellboard.dialoghelper.ProgressDialog
 import com.russellworld.russellboard.utilits.AdapterCallback
 import com.russellworld.russellboard.utilits.ImageManager
@@ -25,7 +28,7 @@ class ImageListFragment(
     private val fragCloseInterface: FragmentCloseInterface,
     private val newList: ArrayList<String>?
 ) :
-    BaseSelectImageFragment(),
+    BaseAdsFragment(),
     AdapterCallback {
 
     val adapter = SelectImageRvAdapter(this)
@@ -33,6 +36,17 @@ class ImageListFragment(
     val touchHelper = ItemTouchHelper(dragCallback)
     private var job: Job? = null
     private var addImageItem: MenuItem? = null
+    lateinit var rootElement: FragmentListImageBinding
+
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        rootElement = FragmentListImageBinding.inflate(layoutInflater)
+        adView = rootElement.adView
+        return rootElement.root
+    }
 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -66,8 +80,7 @@ class ImageListFragment(
             val deleteItem = tbChooseMenu.menu.findItem(R.id.menu_choose_delete_image)
 
             tbChooseMenu.setNavigationOnClickListener {
-                activity?.supportFragmentManager
-                    ?.beginTransaction()?.remove(this@ImageListFragment)?.commit()
+                showInterAd()
             }
             deleteItem.setOnMenuItemClickListener {
                 adapter.updateAdapter(ArrayList(), true)
@@ -117,6 +130,12 @@ class ImageListFragment(
         super.onDetach()
         fragCloseInterface.onFragClose(adapter.mainArray)
         job?.cancel()
+    }
+
+    override fun onInterClose() {
+        super.onInterClose()
+        activity?.supportFragmentManager
+            ?.beginTransaction()?.remove(this@ImageListFragment)?.commit()
     }
 
 
