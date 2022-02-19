@@ -9,6 +9,10 @@
     <color name="white">#FFFFFFFF</color>
     <color name="blue_lite">#4EF5F0</color>
     <color name="color_red">#F32112</color>
-    <color name="green_main">#136A13</color>
+    <color name="green_lite">#719E71</color>
+    <color name="green_main">#0E860E</color>
+    <color name="green_dark">#1C5C1C</color>
     <color name="grey_lite">#E4E4E4</color>
+    <color name="grey_main">#BDBDBD</color>
+    <color name="grey_dark">#706E6E</color>
 </resources>
