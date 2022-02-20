@@ -84,6 +84,15 @@ class EditAddActivity : AppCompatActivity(), FragmentCloseInterface {
         }
     }
 
+
+    fun onClickSelectCategory(view: View) {
+
+        val listCategory = resources.getStringArray(R.array.category).toMutableList() as ArrayList
+        dialog.showSpinnerDialog(this, listCategory, rootElement.tvCategory)
+
+    }
+
+
     fun onClickSelectCity(view: View) {
         val selectedCountry = rootElement.tvCountry.text.toString()
         if (selectedCountry != getString(R.string.select_country)) {
