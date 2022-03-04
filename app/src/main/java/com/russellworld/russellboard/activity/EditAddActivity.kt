@@ -10,6 +10,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.fxn.utility.PermUtil
 import com.russellworld.russellboard.R
 import com.russellworld.russellboard.adapters.ImageAdapter
+import com.russellworld.russellboard.database.DbManager
 import com.russellworld.russellboard.databinding.ActivityEditAddBinding
 import com.russellworld.russellboard.dialogs.DialogSpinnerHelper
 import com.russellworld.russellboard.fragments.FragmentCloseInterface
@@ -110,6 +111,11 @@ class EditAddActivity : AppCompatActivity(), FragmentCloseInterface {
             openChooseImageFragment(null)
             chooseImageFragment?.updateAdapterFromEdit(imageAdapter.mainArray)
         }
+    }
+
+    fun onClickPublish(view: View){
+        val dbManager = DbManager()
+        dbManager.publishAdd()
     }
 
     override fun onFragClose(list: ArrayList<Bitmap>) {
