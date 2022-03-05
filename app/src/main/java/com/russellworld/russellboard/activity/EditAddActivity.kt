@@ -15,6 +15,7 @@ import com.russellworld.russellboard.databinding.ActivityEditAddBinding
 import com.russellworld.russellboard.dialogs.DialogSpinnerHelper
 import com.russellworld.russellboard.fragments.FragmentCloseInterface
 import com.russellworld.russellboard.fragments.ImageListFragment
+import com.russellworld.russellboard.model.Ad
 import com.russellworld.russellboard.utilits.CityHelper
 import com.russellworld.russellboard.utilits.ImagePicker
 
@@ -25,6 +26,7 @@ class EditAddActivity : AppCompatActivity(), FragmentCloseInterface {
     val dialog = DialogSpinnerHelper()
     lateinit var imageAdapter: ImageAdapter
     var editImagePos = 0
+    val dbManager = DbManager()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -113,9 +115,25 @@ class EditAddActivity : AppCompatActivity(), FragmentCloseInterface {
         }
     }
 
-    fun onClickPublish(view: View){
-        val dbManager = DbManager()
-        dbManager.publishAdd()
+    fun onClickPublish(view: View) {
+        dbManager.publishAdd(fillAd())
+    }
+
+    private fun fillAd(): Ad {
+        val ad: Ad
+        rootElement.apply {
+            ad = Ad()
+            tvCountry.text.toString()
+            tvCity.text.toString()
+            edTel.text.toString()
+            edIndex.text.toString()
+            checkBoxWithSend.isChecked.toString()
+            tvCategory.text.toString()
+            edPrice.text.toString()
+            edDescription.text.toString()
+            dbManager.datebase.push().key
+        }
+        return ad
     }
 
     override fun onFragClose(list: ArrayList<Bitmap>) {
