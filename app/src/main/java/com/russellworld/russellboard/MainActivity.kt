@@ -15,6 +15,7 @@ import com.google.android.material.navigation.NavigationView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.russellworld.russellboard.activity.EditAddActivity
+import com.russellworld.russellboard.database.DbManager
 import com.russellworld.russellboard.databinding.ActivityMainBinding
 import com.russellworld.russellboard.dialoghelper.DialogHelper
 import com.russellworld.russellboard.utilits.SIGN_IN_REQUEST_CODE
@@ -26,12 +27,14 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     private val dialogHelper = DialogHelper(this)
     val mAuth = FirebaseAuth.getInstance()
     private lateinit var tvAccount: TextView
+    val dbManager = DbManager()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         rootMainElement = ActivityMainBinding.inflate(layoutInflater)
         setContentView(rootMainElement.root)
         init()
+        dbManager.readDataFromDb()
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {

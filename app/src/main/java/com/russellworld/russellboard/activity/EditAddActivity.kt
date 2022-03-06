@@ -131,7 +131,7 @@ class EditAddActivity : AppCompatActivity(), FragmentCloseInterface {
             tvCategory.text.toString()
             edPrice.text.toString()
             edDescription.text.toString()
-            dbManager.datebase.push().key
+            dbManager.database.push().key
         }
         return ad
     }
