@@ -273,6 +273,39 @@
                         android:layout_marginStart="10dp"
                         android:layout_marginEnd="10dp"
                         android:background="@color/green_main"
+                        android:orientation="horizontal" >
+
+                    </LinearLayout>
+
+                    <TextView
+                        android:id="@+id/tvTitleTitle"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginTop="10dp"
+                        android:text="@string/title"
+                        android:textColor="@color/green_main"
+                        android:textStyle="bold" />
+
+                    <EditText
+                        android:id="@+id/edTitle"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@null"
+                        android:ems="10"
+                        android:hint="@string/title_hint"
+                        android:inputType="text"
+                        android:padding="8dp"
+                        android:textColorHint="@color/grey_dark"
+                        android:textSize="16sp" />
+
+                    <LinearLayout
+                        android:id="@+id/divider8"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginEnd="10dp"
+                        android:background="@color/green_main"
                         android:orientation="horizontal" />
 
                     <TextView

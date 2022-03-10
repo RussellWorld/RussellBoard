@@ -8,7 +8,7 @@ import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 import com.russellworld.russellboard.model.Ad
 
-class DbManager {
+class DbManager(val readDataCallBack: ReadDataCallBack?) {
     val database = Firebase.database.getReference("Main")
     val auth = Firebase.auth
 
@@ -26,6 +26,7 @@ class DbManager {
                     val ad = item.children.iterator().next().child("ad").getValue(Ad::class.java)
                     if (ad != null) adArray.add(ad)
                 }
+                readDataCallBack?.readData(adArray)
             }
 
             override fun onCancelled(error: DatabaseError) {

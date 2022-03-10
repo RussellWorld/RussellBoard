@@ -9,31 +9,37 @@ import android.widget.Toast
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.common.api.ApiException
 import com.google.android.material.navigation.NavigationView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.russellworld.russellboard.activity.EditAddActivity
+import com.russellworld.russellboard.adapters.AdsRcAdapter
 import com.russellworld.russellboard.database.DbManager
+import com.russellworld.russellboard.database.ReadDataCallBack
 import com.russellworld.russellboard.databinding.ActivityMainBinding
 import com.russellworld.russellboard.dialoghelper.DialogHelper
+import com.russellworld.russellboard.model.Ad
 import com.russellworld.russellboard.utilits.SIGN_IN_REQUEST_CODE
 import com.russellworld.russellboard.utilits.SIGN_IN_STATE
 import com.russellworld.russellboard.utilits.SIGN_UP_STATE
 
-class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
+class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener, ReadDataCallBack {
     private lateinit var rootMainElement: ActivityMainBinding
     private val dialogHelper = DialogHelper(this)
     val mAuth = FirebaseAuth.getInstance()
     private lateinit var tvAccount: TextView
-    val dbManager = DbManager()
+    val dbManager = DbManager(this)
+    val adapter = AdsRcAdapter()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         rootMainElement = ActivityMainBinding.inflate(layoutInflater)
         setContentView(rootMainElement.root)
         init()
+        initRecyclerView()
         dbManager.readDataFromDb()
     }
 
@@ -87,6 +93,14 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         tvAccount = rootMainElement.drawerNavView.getHeaderView(0).findViewById(R.id.drawer_header_textv)
     }
 
+    private fun initRecyclerView() {
+        rootMainElement.apply {
+            mainContent.rcMainView.layoutManager = LinearLayoutManager(this@MainActivity)
+            mainContent.rcMainView.adapter = adapter
+
+        }
+    }
+
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.add_my_adds -> {
@@ -126,5 +140,9 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         } else {
             user.email
         }
+    }
+
+    override fun readData(arrayList: ArrayList<Ad>) {
+        adapter.updateAdapter(arrayList)
     }
 }

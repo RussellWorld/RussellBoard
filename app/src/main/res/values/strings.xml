@@ -50,4 +50,6 @@
     <string name="description_hint">*Описание</string>
     <string name="with_send">С отправкой</string>
     <string name="publish">Опубликовать</string>
+    <string name="title">Заголовок</string>
+    <string name="title_hint">*Введите заголовок</string>
 </resources>

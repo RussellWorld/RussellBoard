@@ -31,7 +31,7 @@ class AdsRcAdapter : RecyclerView.Adapter<AdsRcAdapter.AdHolder>() {
 
         fun setData(ad: Ad) {
             rootElement.apply {
-                // textViewTitle.text = ad.
+                textViewTitle.text = ad.title
                 tvDescription.text = ad.description
                 tvPrice.text = ad.price
             }

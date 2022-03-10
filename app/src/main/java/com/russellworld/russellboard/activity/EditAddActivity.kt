@@ -26,7 +26,7 @@ class EditAddActivity : AppCompatActivity(), FragmentCloseInterface {
     val dialog = DialogSpinnerHelper()
     lateinit var imageAdapter: ImageAdapter
     var editImagePos = 0
-    val dbManager = DbManager()
+    val dbManager = DbManager(null)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -122,16 +122,18 @@ class EditAddActivity : AppCompatActivity(), FragmentCloseInterface {
     private fun fillAd(): Ad {
         val ad: Ad
         rootElement.apply {
-            ad = Ad()
-            tvCountry.text.toString()
-            tvCity.text.toString()
-            edTel.text.toString()
-            edIndex.text.toString()
-            checkBoxWithSend.isChecked.toString()
-            tvCategory.text.toString()
-            edPrice.text.toString()
-            edDescription.text.toString()
-            dbManager.database.push().key
+            ad = Ad(
+                tvCountry.text.toString(),
+                tvCity.text.toString(),
+                edTel.text.toString(),
+                edIndex.text.toString(),
+                checkBoxWithSend.isChecked.toString(),
+                tvCategory.text.toString(),
+                tvTitleTitle.text.toString(),
+                edPrice.text.toString(),
+                edDescription.text.toString(),
+                dbManager.database.push().key
+            )
         }
         return ad
     }
