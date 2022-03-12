@@ -54,11 +54,8 @@ class SelectImageRvAdapter(val adapterCallback: AdapterCallback) :
         fun setData(bitMap: Bitmap) {
 
             rootElement.btmEditImage.setOnClickListener {
-                ImagePicker.getImages(
-                    context as EditAddActivity,
-                    1,
-                    ImagePicker.REQUEST_CODE_GET_SINGLE_IMAGE
-                )
+                ImagePicker.launcherImages(
+                    context as EditAddActivity, context.launcherSinglSelectImage, 1)
                 context.editImagePos = adapterPosition
             }
 

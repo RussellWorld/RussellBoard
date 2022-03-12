@@ -6,6 +6,7 @@ import android.graphics.Bitmap
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
+import androidx.activity.result.ActivityResultLauncher
 import androidx.appcompat.app.AppCompatActivity
 import com.fxn.utility.PermUtil
 import com.russellworld.russellboard.R
@@ -27,6 +28,8 @@ class EditAddActivity : AppCompatActivity(), FragmentCloseInterface {
     lateinit var imageAdapter: ImageAdapter
     var editImagePos = 0
     val dbManager = DbManager(null)
+    var launcherMultiSelectImage: ActivityResultLauncher<Intent>? = null
+    var launcherSinglSelectImage: ActivityResultLauncher<Intent>? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -36,12 +39,6 @@ class EditAddActivity : AppCompatActivity(), FragmentCloseInterface {
         init()
     }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-
-        ImagePicker.showSelectedImages(resultCode, resultCode, data, this)
-
-    }
 
     fun openChooseImageFragment(newList: ArrayList<String>?) {
         chooseImageFragment = ImageListFragment(this, newList)
@@ -56,11 +53,10 @@ class EditAddActivity : AppCompatActivity(), FragmentCloseInterface {
         permissions: Array<out String>,
         grantResults: IntArray
     ) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         when (requestCode) {
             PermUtil.REQUEST_CODE_ASK_MULTIPLE_PERMISSIONS -> {
                 if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    ImagePicker.getImages(this, 3, ImagePicker.REQUEST_CODE_GET_IMAGES)
+                    ImagePicker.getOptions(3)
                 } else {
                     Toast.makeText(
                         this,
@@ -71,11 +67,14 @@ class EditAddActivity : AppCompatActivity(), FragmentCloseInterface {
                 return
             }
         }
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
     }
 
     private fun init() {
         imageAdapter = ImageAdapter()
         rootElement.vpImages.adapter = imageAdapter
+        launcherMultiSelectImage = ImagePicker.getLauncherForMultiSelectImages(this)
+        launcherSinglSelectImage = ImagePicker.getLauncherForSingleImages(this)
     }
 
 
@@ -108,7 +107,7 @@ class EditAddActivity : AppCompatActivity(), FragmentCloseInterface {
 
     fun onClickGetImages(view: View) {
         if (imageAdapter.mainArray.size == 0) {
-            ImagePicker.getImages(this, 3, ImagePicker.REQUEST_CODE_GET_IMAGES)
+            ImagePicker.launcherImages(this, launcherMultiSelectImage, 3)
         } else {
             openChooseImageFragment(null)
             chooseImageFragment?.updateAdapterFromEdit(imageAdapter.mainArray)

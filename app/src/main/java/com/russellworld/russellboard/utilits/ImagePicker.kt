@@ -2,9 +2,13 @@ package com.russellworld.russellboard.utilits
 
 import android.content.Intent
 import android.view.View
+import androidx.activity.result.ActivityResult
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import com.fxn.pix.Options
 import com.fxn.pix.Pix
+import com.fxn.utility.PermUtil
 import com.russellworld.russellboard.activity.EditAddActivity
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -16,50 +20,67 @@ object ImagePicker {
     const val MAX_IMAGE_COUNT = 3
     const val REQUEST_CODE_GET_IMAGES = 999
     const val REQUEST_CODE_GET_SINGLE_IMAGE = 998
-    fun getImages(context: AppCompatActivity, imageCount: Int, rCode: Int) {
-        val options = Options.init()
-            .setRequestCode(rCode)
+    fun getOptions(imageCount: Int): Options {
+
+        return Options.init()
             .setCount(imageCount)
             .setFrontfacing(false)
             .setMode(Options.Mode.Picture)
             .setScreenOrientation(Options.SCREEN_ORIENTATION_PORTRAIT)
             .setPath("/pix/images")
-
-        Pix.start(context, options)
     }
 
-    fun showSelectedImages(resultCode: Int, requestCode: Int, data: Intent?, edActivity: EditAddActivity) {
+    fun launcherImages(
+        edActivity: EditAddActivity, launcher: ActivityResultLauncher<Intent>?,
+        imageCount: Int
+    ) {
+        PermUtil.checkForCamaraWritePermissions(edActivity) {
+            val intent = Intent(edActivity, Pix::class.java).apply {
+                putExtra("options", getOptions(imageCount))
+            }
+            launcher?.launch(intent)
+        }
+    }
 
-        if (resultCode == AppCompatActivity.RESULT_OK && requestCode == REQUEST_CODE_GET_IMAGES) {
+    fun getLauncherForMultiSelectImages(edActivity: EditAddActivity): ActivityResultLauncher<Intent> {
+        return edActivity.registerForActivityResult(ActivityResultContracts.StartActivityForResult())
+        { result: ActivityResult ->
+            if (result.resultCode == AppCompatActivity.RESULT_OK) {
+                if (result.data != null) {
 
-            if (data != null) {
+                    val returnValue = result.data?.getStringArrayListExtra(Pix.IMAGE_RESULTS)
 
-                val returnValue = data.getStringArrayListExtra(Pix.IMAGE_RESULTS)
+                    if (returnValue?.size!! > 1 && edActivity.chooseImageFragment == null) {
 
-                if (returnValue?.size!! > 1 && edActivity.chooseImageFragment == null) {
+                        edActivity.openChooseImageFragment(returnValue)
 
-                    edActivity.openChooseImageFragment(returnValue)
+                    } else if (edActivity.chooseImageFragment != null) {
 
-                } else if (edActivity.chooseImageFragment != null) {
+                        edActivity.chooseImageFragment?.updateAdapter(returnValue)
 
-                    edActivity.chooseImageFragment?.updateAdapter(returnValue)
+                    } else if (returnValue.size == 1 && edActivity.chooseImageFragment == null) {
 
-                } else if (returnValue.size == 1 && edActivity.chooseImageFragment == null) {
-
-                    CoroutineScope(Dispatchers.Main).launch {
-                        edActivity.rootElement.pBarEditAct.visibility = View.VISIBLE
-                        val bitMapArray = ImageManager.imageResize(returnValue)
-                        edActivity.rootElement.pBarEditAct.visibility = View.GONE
-                        edActivity.imageAdapter.update(bitMapArray)
+                        CoroutineScope(Dispatchers.Main).launch {
+                            edActivity.rootElement.pBarEditAct.visibility = View.VISIBLE
+                            val bitMapArray = ImageManager.imageResize(returnValue)
+                            edActivity.rootElement.pBarEditAct.visibility = View.GONE
+                            edActivity.imageAdapter.update(bitMapArray)
+                        }
                     }
                 }
             }
+        }
+    }
 
-        } else if (resultCode == AppCompatActivity.RESULT_OK && requestCode == REQUEST_CODE_GET_SINGLE_IMAGE) {
-            if (data != null) {
+    fun getLauncherForSingleImages(edActivity: EditAddActivity): ActivityResultLauncher<Intent> {
+        return edActivity.registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
+                result: ActivityResult ->
+            if (result.resultCode == AppCompatActivity.RESULT_OK) {
+                if (result.data != null) {
 
-                val uri = data.getStringArrayListExtra(Pix.IMAGE_RESULTS)
-                edActivity.chooseImageFragment?.setSingleImage(uri?.get(0)!!, edActivity.editImagePos)
+                    val uri = result.data?.getStringArrayListExtra(Pix.IMAGE_RESULTS)
+                    edActivity.chooseImageFragment?.setSingleImage(uri?.get(0)!!, edActivity.editImagePos)
+                }
             }
         }
     }

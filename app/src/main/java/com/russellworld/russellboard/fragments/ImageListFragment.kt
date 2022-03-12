@@ -8,11 +8,11 @@ import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ProgressBar
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.get
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.russellworld.russellboard.R
+import com.russellworld.russellboard.activity.EditAddActivity
 import com.russellworld.russellboard.databinding.FragmentListImageBinding
 import com.russellworld.russellboard.dialoghelper.ProgressDialog
 import com.russellworld.russellboard.utilits.AdapterCallback
@@ -90,10 +90,10 @@ class ImageListFragment(
 
             addImageItem?.setOnMenuItemClickListener {
                 val imageCount = ImagePicker.MAX_IMAGE_COUNT - adapter.mainArray.size
-                ImagePicker.getImages(
-                    activity as AppCompatActivity,
-                    imageCount,
-                    ImagePicker.REQUEST_CODE_GET_IMAGES
+                ImagePicker.launcherImages(
+                    activity as EditAddActivity,
+                    (activity as EditAddActivity).launcherMultiSelectImage,
+                    imageCount
                 )
                 true
             }
