@@ -131,7 +131,8 @@ class EditAddActivity : AppCompatActivity(), FragmentCloseInterface {
                 tvTitleTitle.text.toString(),
                 edPrice.text.toString(),
                 edDescription.text.toString(),
-                dbManager.database.push().key
+                dbManager.database.push().key,
+                dbManager.auth.uid
             )
         }
         return ad
