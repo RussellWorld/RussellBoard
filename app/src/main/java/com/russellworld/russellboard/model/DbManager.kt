@@ -1,4 +1,4 @@
-package com.russellworld.russellboard.database
+package com.russellworld.russellboard.model
 
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.database.DataSnapshot
@@ -6,9 +6,8 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
-import com.russellworld.russellboard.model.Ad
 
-class DbManager(val readDataCallBack: ReadDataCallBack?) {
+class DbManager {
     val database = Firebase.database.getReference("Main")
     val auth = Firebase.auth
 
@@ -18,7 +17,7 @@ class DbManager(val readDataCallBack: ReadDataCallBack?) {
         }
     }
 
-    fun readDataFromDb() {
+    fun readDataFromDb(readDataCallBack: ReadDataCallBack?) {
         database.addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 val adArray = ArrayList<Ad>()
@@ -28,11 +27,11 @@ class DbManager(val readDataCallBack: ReadDataCallBack?) {
                 }
                 readDataCallBack?.readData(adArray)
             }
-
-            override fun onCancelled(error: DatabaseError) {
-
-            }
-
+            override fun onCancelled(error: DatabaseError) {  }
         })
+    }
+
+    interface ReadDataCallBack {
+        fun readData(arrayList: ArrayList<Ad>)
     }
 }

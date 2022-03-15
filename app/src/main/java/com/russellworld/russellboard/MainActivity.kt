@@ -6,6 +6,7 @@ import android.view.Menu
 import android.view.MenuItem
 import android.widget.TextView
 import android.widget.Toast
+import androidx.activity.viewModels
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
@@ -18,22 +19,20 @@ import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import com.russellworld.russellboard.activity.EditAddActivity
 import com.russellworld.russellboard.adapters.AdsRcAdapter
-import com.russellworld.russellboard.database.DbManager
-import com.russellworld.russellboard.database.ReadDataCallBack
 import com.russellworld.russellboard.databinding.ActivityMainBinding
 import com.russellworld.russellboard.dialoghelper.DialogHelper
-import com.russellworld.russellboard.model.Ad
 import com.russellworld.russellboard.utilits.SIGN_IN_REQUEST_CODE
 import com.russellworld.russellboard.utilits.SIGN_IN_STATE
 import com.russellworld.russellboard.utilits.SIGN_UP_STATE
+import com.russellworld.russellboard.viewmodels.FirebaseViewModel
 
-class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener, ReadDataCallBack {
+class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
     private lateinit var rootMainElement: ActivityMainBinding
     private val dialogHelper = DialogHelper(this)
     val mAuth = Firebase.auth
     private lateinit var tvAccount: TextView
-    val dbManager = DbManager(this)
     val adapter = AdsRcAdapter(mAuth)
+    private val firebaseViewModel: FirebaseViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -41,10 +40,11 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         setContentView(rootMainElement.root)
         init()
         initRecyclerView()
-        dbManager.readDataFromDb()
+        initViewModel()
+        firebaseViewModel.loadAllAds()
     }
 
-    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.main_menu, menu)
         return super.onCreateOptionsMenu(menu)
     }
@@ -62,9 +62,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             val task = GoogleSignIn.getSignedInAccountFromIntent(data)
             try {
                 val account = task.getResult(ApiException::class.java)
-                if (account != null) {
-                    dialogHelper.accountHelper.signInFirebaseWithGoogle(account.idToken!!)
-                }
+                if (account != null) dialogHelper.accountHelper.signInFirebaseWithGoogle(account.idToken!!)
             } catch (e: Exception) {
                 Toast.makeText(this, e.message, Toast.LENGTH_SHORT).show()
             }
@@ -76,6 +74,12 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     override fun onStart() {
         super.onStart()
         uiUpdate(mAuth.currentUser)
+    }
+
+    private fun initViewModel() {
+        firebaseViewModel.liveAdsData.observe(this) {
+            adapter.updateAdapter(it)
+        }
     }
 
     private fun init() {
@@ -141,9 +145,5 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         } else {
             user.email
         }
-    }
-
-    override fun readData(arrayList: ArrayList<Ad>) {
-        adapter.updateAdapter(arrayList)
     }
 }

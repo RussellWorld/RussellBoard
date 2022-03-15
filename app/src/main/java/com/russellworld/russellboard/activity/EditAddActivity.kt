@@ -11,7 +11,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.fxn.utility.PermUtil
 import com.russellworld.russellboard.R
 import com.russellworld.russellboard.adapters.ImageAdapter
-import com.russellworld.russellboard.database.DbManager
+import com.russellworld.russellboard.model.DbManager
 import com.russellworld.russellboard.databinding.ActivityEditAddBinding
 import com.russellworld.russellboard.dialogs.DialogSpinnerHelper
 import com.russellworld.russellboard.fragments.FragmentCloseInterface
@@ -27,7 +27,7 @@ class EditAddActivity : AppCompatActivity(), FragmentCloseInterface {
     val dialog = DialogSpinnerHelper()
     lateinit var imageAdapter: ImageAdapter
     var editImagePos = 0
-    val dbManager = DbManager(null)
+    val dbManager = DbManager()
     var launcherMultiSelectImage: ActivityResultLauncher<Intent>? = null
     var launcherSinglSelectImage: ActivityResultLauncher<Intent>? = null
 
