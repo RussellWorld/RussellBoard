@@ -4,6 +4,7 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="..\:/Users/User/AndroidStudioProjects/RussellBoard/app/src/main/res/drawable-v24/edit_image_bg_pressed.xml" value="0.131" />
+        <entry key="..\:/Users/User/AndroidStudioProjects/RussellBoard/app/src/main/res/drawable/buttom_nav_selector.xml" value="0.131" />
         <entry key="..\:/Users/User/AndroidStudioProjects/RussellBoard/app/src/main/res/drawable/edit_image_bg.xml" value="0.131" />
         <entry key="..\:/Users/User/AndroidStudioProjects/RussellBoard/app/src/main/res/drawable/edit_image_bg_normal.xml" value="0.131" />
         <entry key="..\:/Users/User/AndroidStudioProjects/RussellBoard/app/src/main/res/drawable/edit_image_button.xml" value="0.152" />
@@ -25,12 +26,13 @@
         <entry key="..\:/Users/User/AndroidStudioProjects/RussellBoard/app/src/main/res/layout/fragment_list_image.xml" value="0.264" />
         <entry key="..\:/Users/User/AndroidStudioProjects/RussellBoard/app/src/main/res/layout/fragment_select_image_item.xml" value="0.36180904522613067" />
         <entry key="..\:/Users/User/AndroidStudioProjects/RussellBoard/app/src/main/res/layout/image_adapter_item.xml" value="0.21203703703703702" />
-        <entry key="..\:/Users/User/AndroidStudioProjects/RussellBoard/app/src/main/res/layout/main_content.xml" value="0.21203703703703702" />
+        <entry key="..\:/Users/User/AndroidStudioProjects/RussellBoard/app/src/main/res/layout/main_content.xml" value="0.264" />
         <entry key="..\:/Users/User/AndroidStudioProjects/RussellBoard/app/src/main/res/layout/nav_header_main.xml" value="0.4" />
         <entry key="..\:/Users/User/AndroidStudioProjects/RussellBoard/app/src/main/res/layout/progress_dialog_layout.xml" value="0.264" />
         <entry key="..\:/Users/User/AndroidStudioProjects/RussellBoard/app/src/main/res/layout/sign_dialog.xml" value="0.264" />
         <entry key="..\:/Users/User/AndroidStudioProjects/RussellBoard/app/src/main/res/layout/sp_list_item.xml" value="0.21203703703703702" />
         <entry key="..\:/Users/User/AndroidStudioProjects/RussellBoard/app/src/main/res/layout/spinner_layout.xml" value="0.21203703703703702" />
+        <entry key="..\:/Users/User/AndroidStudioProjects/RussellBoard/app/src/main/res/menu/button_main_menu.xml" value="0.264" />
         <entry key="..\:/Users/User/AndroidStudioProjects/RussellBoard/app/src/main/res/menu/choose_image_menu.xml" value="0.264" />
         <entry key="..\:/Users/User/AndroidStudioProjects/RussellBoard/app/src/main/res/menu/drawer_main_menu.xml" value="0.264" />
         <entry key="..\:/Users/User/AndroidStudioProjects/RussellBoard/app/src/main/res/menu/main_menu.xml" value="0.264" />

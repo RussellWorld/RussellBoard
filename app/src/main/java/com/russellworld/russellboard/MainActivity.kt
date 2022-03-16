@@ -2,7 +2,6 @@ package com.russellworld.russellboard
 
 import android.content.Intent
 import android.os.Bundle
-import android.view.Menu
 import android.view.MenuItem
 import android.widget.TextView
 import android.widget.Toast
@@ -42,19 +41,12 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         initRecyclerView()
         initViewModel()
         firebaseViewModel.loadAllAds()
+        bottomMenuOnClick()
     }
 
-    override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        menuInflater.inflate(R.menu.main_menu, menu)
-        return super.onCreateOptionsMenu(menu)
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        if (item.itemId == R.id.id_new_adds) {
-            val i = Intent(this, EditAddActivity::class.java)
-            startActivity(i)
-        }
-        return super.onOptionsItemSelected(item)
+    override fun onResume() {
+        super.onResume()
+        rootMainElement.mainContent.bNavView.selectedItemId = R.id.id_home
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -68,7 +60,6 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             }
         }
         super.onActivityResult(requestCode, resultCode, data)
-
     }
 
     override fun onStart() {
@@ -96,6 +87,27 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         toggle.syncState()
         rootMainElement.drawerNavView.setNavigationItemSelectedListener(this)
         tvAccount = rootMainElement.drawerNavView.getHeaderView(0).findViewById(R.id.drawer_header_textv)
+    }
+
+    private fun bottomMenuOnClick() {
+        rootMainElement.mainContent.bNavView.setOnNavigationItemSelectedListener { item ->
+            when (item.itemId) {
+                R.id.id_new_ad -> {
+                    val i = Intent(this, EditAddActivity::class.java)
+                    startActivity(i)
+                }
+                R.id.id_my_ads -> {
+                    Toast.makeText(this@MainActivity, "MyAds", Toast.LENGTH_SHORT).show()
+                }
+                R.id.id_favs -> {
+                    Toast.makeText(this@MainActivity, "Favs", Toast.LENGTH_SHORT).show()
+                }
+                R.id.id_home -> {
+                    Toast.makeText(this@MainActivity, "Home", Toast.LENGTH_SHORT).show()
+                }
+            }
+            true
+        }
     }
 
     private fun initRecyclerView() {
