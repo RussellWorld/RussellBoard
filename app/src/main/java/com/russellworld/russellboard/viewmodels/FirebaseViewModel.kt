@@ -5,13 +5,21 @@ import androidx.lifecycle.ViewModel
 import com.russellworld.russellboard.model.Ad
 import com.russellworld.russellboard.model.DbManager
 
-class FirebaseViewModel : ViewModel(){
+class FirebaseViewModel : ViewModel() {
     private val dbManager = DbManager()
     val liveAdsData = MutableLiveData<ArrayList<Ad>>()
-    fun loadAllAds(){
-        dbManager.readDataFromDb(object: DbManager.ReadDataCallBack{
+    fun loadAllAds() {
+        dbManager.getAllAds(object : DbManager.ReadDataCallBack {
             override fun readData(arrayList: ArrayList<Ad>) {
-             liveAdsData.value = arrayList
+                liveAdsData.value = arrayList
+            }
+        })
+    }
+
+    fun loadMyAds() {
+        dbManager.getMyAds(object : DbManager.ReadDataCallBack {
+            override fun readData(arrayList: ArrayList<Ad>) {
+                liveAdsData.value = arrayList
             }
         })
     }

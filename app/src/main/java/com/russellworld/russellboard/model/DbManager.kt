@@ -3,6 +3,7 @@ package com.russellworld.russellboard.model
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.Query
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
@@ -17,8 +18,18 @@ class DbManager {
         }
     }
 
-    fun readDataFromDb(readDataCallBack: ReadDataCallBack?) {
-        database.addListenerForSingleValueEvent(object : ValueEventListener {
+    fun getMyAds(readDataCallBack: ReadDataCallBack?) {
+        val query = database.orderByChild(auth.uid + "/ad/uid").equalTo(auth.uid)
+        readDataFromDb(query, readDataCallBack)
+    }
+
+    fun getAllAds(readDataCallBack: ReadDataCallBack?) {
+        val query = database.orderByChild(auth.uid + "/ad/price")
+        readDataFromDb(query, readDataCallBack)
+    }
+
+    private fun readDataFromDb(query: Query, readDataCallBack: ReadDataCallBack?) {
+        query.addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 val adArray = ArrayList<Ad>()
                 for (item in snapshot.children) {
@@ -27,7 +38,8 @@ class DbManager {
                 }
                 readDataCallBack?.readData(adArray)
             }
-            override fun onCancelled(error: DatabaseError) {  }
+
+            override fun onCancelled(error: DatabaseError) {}
         })
     }
 

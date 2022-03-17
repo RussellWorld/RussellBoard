@@ -25,6 +25,7 @@ import com.russellworld.russellboard.utilits.SIGN_IN_STATE
 import com.russellworld.russellboard.utilits.SIGN_UP_STATE
 import com.russellworld.russellboard.viewmodels.FirebaseViewModel
 
+
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
     private lateinit var rootMainElement: ActivityMainBinding
     private val dialogHelper = DialogHelper(this)
@@ -97,13 +98,15 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                     startActivity(i)
                 }
                 R.id.id_my_ads -> {
-                    Toast.makeText(this@MainActivity, "MyAds", Toast.LENGTH_SHORT).show()
+                    firebaseViewModel.loadMyAds()
+                    rootMainElement.mainContent.mainToolbar.title = getString(R.string.add_my_adds)
                 }
                 R.id.id_favs -> {
                     Toast.makeText(this@MainActivity, "Favs", Toast.LENGTH_SHORT).show()
                 }
                 R.id.id_home -> {
-                    Toast.makeText(this@MainActivity, "Home", Toast.LENGTH_SHORT).show()
+                   firebaseViewModel.loadAllAds()
+                    rootMainElement.mainContent.mainToolbar.title = getString(R.string.add_my_def)
                 }
             }
             true
