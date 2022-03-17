@@ -17,7 +17,9 @@ import com.russellworld.russellboard.dialogs.DialogSpinnerHelper
 import com.russellworld.russellboard.fragments.FragmentCloseInterface
 import com.russellworld.russellboard.fragments.ImageListFragment
 import com.russellworld.russellboard.model.Ad
+import com.russellworld.russellboard.utilits.ADS_DATA
 import com.russellworld.russellboard.utilits.CityHelper
+import com.russellworld.russellboard.utilits.EDIT_STATE
 import com.russellworld.russellboard.utilits.ImagePicker
 
 class EditAddActivity : AppCompatActivity(), FragmentCloseInterface {
@@ -35,8 +37,31 @@ class EditAddActivity : AppCompatActivity(), FragmentCloseInterface {
         super.onCreate(savedInstanceState)
         rootElement = ActivityEditAddBinding.inflate(layoutInflater)
         setContentView(rootElement.root)
-
         init()
+        checkEditState()
+    }
+
+    private fun checkEditState(){
+        if (isEditState()){
+            fillViews(intent.getSerializableExtra(ADS_DATA) as Ad)
+        }
+    }
+
+    private fun isEditState(): Boolean{
+        return intent.getBooleanExtra(EDIT_STATE, false)
+    }
+
+    private fun fillViews(ad: Ad) = with(rootElement){
+        tvCountry.text = ad.country
+        tvCity.text = ad.city
+        edTel.setText(ad.tel)
+        edIndex.setText(ad.index)
+        checkBoxWithSend.isChecked = ad.withSent.toBoolean()
+        tvCategory.text = ad.category
+        edTitle.setText(ad.title)
+        edPrice.setText(ad.price)
+        edDescription.setText(ad.description)
+
     }
 
 
@@ -75,6 +100,7 @@ class EditAddActivity : AppCompatActivity(), FragmentCloseInterface {
         rootElement.vpImages.adapter = imageAdapter
         launcherMultiSelectImage = ImagePicker.getLauncherForMultiSelectImages(this)
         launcherSinglSelectImage = ImagePicker.getLauncherForSingleImages(this)
+
     }
 
 
