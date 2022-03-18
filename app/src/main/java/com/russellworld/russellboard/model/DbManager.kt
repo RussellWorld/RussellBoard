@@ -12,9 +12,13 @@ class DbManager {
     val database = Firebase.database.getReference("Main")
     val auth = Firebase.auth
 
-    fun publishAdd(ad: Ad) {
+    fun publishAdd(ad: Ad, finishWorkListener: FinishWorkListener) {
         if (auth.uid != null) {
-            database.child(ad.key ?: "empty").child(auth.uid!!).child("ad").setValue(ad)
+            database.child(ad.key ?: "empty")
+                .child(auth.uid!!).child("ad").setValue(ad)
+                .addOnCompleteListener {
+                    finishWorkListener.onFinish()
+                }
         }
     }
 
@@ -45,5 +49,9 @@ class DbManager {
 
     interface ReadDataCallBack {
         fun readData(arrayList: ArrayList<Ad>)
+    }
+
+    interface FinishWorkListener {
+        fun onFinish()
     }
 }

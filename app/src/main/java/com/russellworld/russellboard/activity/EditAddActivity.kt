@@ -11,12 +11,12 @@ import androidx.appcompat.app.AppCompatActivity
 import com.fxn.utility.PermUtil
 import com.russellworld.russellboard.R
 import com.russellworld.russellboard.adapters.ImageAdapter
-import com.russellworld.russellboard.model.DbManager
 import com.russellworld.russellboard.databinding.ActivityEditAddBinding
 import com.russellworld.russellboard.dialogs.DialogSpinnerHelper
 import com.russellworld.russellboard.fragments.FragmentCloseInterface
 import com.russellworld.russellboard.fragments.ImageListFragment
 import com.russellworld.russellboard.model.Ad
+import com.russellworld.russellboard.model.DbManager
 import com.russellworld.russellboard.utilits.ADS_DATA
 import com.russellworld.russellboard.utilits.CityHelper
 import com.russellworld.russellboard.utilits.EDIT_STATE
@@ -28,10 +28,12 @@ class EditAddActivity : AppCompatActivity(), FragmentCloseInterface {
     var chooseImageFragment: ImageListFragment? = null
     val dialog = DialogSpinnerHelper()
     lateinit var imageAdapter: ImageAdapter
-    var editImagePos = 0
     val dbManager = DbManager()
     var launcherMultiSelectImage: ActivityResultLauncher<Intent>? = null
     var launcherSinglSelectImage: ActivityResultLauncher<Intent>? = null
+    var editImagePos = 0
+    private var isEditState = false
+    private var ad: Ad? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -41,17 +43,19 @@ class EditAddActivity : AppCompatActivity(), FragmentCloseInterface {
         checkEditState()
     }
 
-    private fun checkEditState(){
-        if (isEditState()){
-            fillViews(intent.getSerializableExtra(ADS_DATA) as Ad)
+    private fun checkEditState() {
+        if (isEditState()) {
+            isEditState = true
+            ad = intent.getSerializableExtra(ADS_DATA) as Ad
+            if (ad != null) fillViews(ad!!)
         }
     }
 
-    private fun isEditState(): Boolean{
+    private fun isEditState(): Boolean {
         return intent.getBooleanExtra(EDIT_STATE, false)
     }
 
-    private fun fillViews(ad: Ad) = with(rootElement){
+    private fun fillViews(ad: Ad) = with(rootElement) {
         tvCountry.text = ad.country
         tvCity.text = ad.city
         edTel.setText(ad.tel)
@@ -141,7 +145,20 @@ class EditAddActivity : AppCompatActivity(), FragmentCloseInterface {
     }
 
     fun onClickPublish(view: View) {
-        dbManager.publishAdd(fillAd())
+        val adTemp = fillAd()
+        if (isEditState){
+            dbManager.publishAdd(adTemp.copy(key = ad?.key), onPublishFinish())
+        } else {
+            dbManager.publishAdd(adTemp, onPublishFinish())
+        }
+    }
+
+    private fun onPublishFinish(): DbManager.FinishWorkListener {
+        return object: DbManager.FinishWorkListener{
+            override fun onFinish() {
+                finish()
+            }
+        }
     }
 
     private fun fillAd(): Ad {
