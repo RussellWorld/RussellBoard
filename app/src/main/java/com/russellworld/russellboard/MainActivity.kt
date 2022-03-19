@@ -20,13 +20,15 @@ import com.russellworld.russellboard.activity.EditAddActivity
 import com.russellworld.russellboard.adapters.AdsRcAdapter
 import com.russellworld.russellboard.databinding.ActivityMainBinding
 import com.russellworld.russellboard.dialoghelper.DialogHelper
+import com.russellworld.russellboard.model.Ad
 import com.russellworld.russellboard.utilits.SIGN_IN_REQUEST_CODE
 import com.russellworld.russellboard.utilits.SIGN_IN_STATE
 import com.russellworld.russellboard.utilits.SIGN_UP_STATE
 import com.russellworld.russellboard.viewmodels.FirebaseViewModel
 
 
-class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
+class MainActivity : AppCompatActivity(),
+    NavigationView.OnNavigationItemSelectedListener, AdsRcAdapter.DeleteItemListener {
     private lateinit var rootMainElement: ActivityMainBinding
     private val dialogHelper = DialogHelper(this)
     val mAuth = Firebase.auth
@@ -70,7 +72,9 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
     private fun initViewModel() {
         firebaseViewModel.liveAdsData.observe(this) {
-            adapter.updateAdapter(it)
+            if (it != null) {
+                adapter.updateAdapter(it)
+            }
         }
     }
 
@@ -105,7 +109,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                     Toast.makeText(this@MainActivity, "Favs", Toast.LENGTH_SHORT).show()
                 }
                 R.id.id_home -> {
-                   firebaseViewModel.loadAllAds()
+                    firebaseViewModel.loadAllAds()
                     rootMainElement.mainContent.mainToolbar.title = getString(R.string.add_my_def)
                 }
             }
@@ -160,5 +164,9 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         } else {
             user.email
         }
+    }
+
+    override fun onDeleteItem(ad: Ad) {
+        firebaseViewModel.deleteItem(ad)
     }
 }

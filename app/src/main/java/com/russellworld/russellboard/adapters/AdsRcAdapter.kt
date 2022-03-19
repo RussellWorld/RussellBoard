@@ -4,8 +4,8 @@ import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
-import com.google.firebase.auth.FirebaseAuth
 import com.russellworld.russellboard.MainActivity
 import com.russellworld.russellboard.activity.EditAddActivity
 import com.russellworld.russellboard.databinding.AdListItemBinding
@@ -29,9 +29,11 @@ class AdsRcAdapter(val activity: MainActivity) : RecyclerView.Adapter<AdsRcAdapt
     override fun getItemCount(): Int = adArray.size
 
     fun updateAdapter(newList: ArrayList<Ad>) {
+        val diffResult = DiffUtil.calculateDiff(DiffUtilHelper(adArray, newList))
+        diffResult.dispatchUpdatesTo(this)
         adArray.clear()
         adArray.addAll(newList)
-        notifyDataSetChanged()
+
     }
 
     class AdHolder(val rootElement: AdListItemBinding, val activity: MainActivity) :
@@ -41,12 +43,14 @@ class AdsRcAdapter(val activity: MainActivity) : RecyclerView.Adapter<AdsRcAdapt
             textViewTitle.text = ad.title
             tvDescription.text = ad.description
             tvPrice.text = ad.price
-
             showEditPanel(isOwner(ad))
             ibEditAd.setOnClickListener(onClickEdit(ad))
+            ibDeleteAd.setOnClickListener {
+                activity.onDeleteItem(ad)
+            }
         }
 
-        private fun onClickEdit(ad: Ad): View.OnClickListener{
+        private fun onClickEdit(ad: Ad): View.OnClickListener {
             return View.OnClickListener {
                 val editIntent = Intent(activity, EditAddActivity::class.java).apply {
                     putExtra(EDIT_STATE, true)
@@ -67,5 +71,9 @@ class AdsRcAdapter(val activity: MainActivity) : RecyclerView.Adapter<AdsRcAdapt
                 rootElement.editPanel.visibility = View.GONE
             }
         }
+    }
+
+    interface DeleteItemListener {
+        fun onDeleteItem(ad: Ad)
     }
 }
