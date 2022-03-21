@@ -28,7 +28,7 @@ import com.russellworld.russellboard.viewmodels.FirebaseViewModel
 
 
 class MainActivity : AppCompatActivity(),
-    NavigationView.OnNavigationItemSelectedListener, AdsRcAdapter.DeleteItemListener {
+    NavigationView.OnNavigationItemSelectedListener, AdsRcAdapter.ItemsListener {
     private lateinit var rootMainElement: ActivityMainBinding
     private val dialogHelper = DialogHelper(this)
     val mAuth = Firebase.auth
@@ -168,5 +168,9 @@ class MainActivity : AppCompatActivity(),
 
     override fun onDeleteItem(ad: Ad) {
         firebaseViewModel.deleteItem(ad)
+    }
+
+    override fun onAdViewed(ad: Ad) {
+        firebaseViewModel.adViewed(ad)
     }
 }

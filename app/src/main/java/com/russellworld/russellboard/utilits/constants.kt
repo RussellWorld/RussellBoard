@@ -12,3 +12,7 @@ const val ERROR_USER_NOT_FOUND = "ERROR_USER_NOT_FOUND"
 
 const val EDIT_STATE = "edit_state"
 const val ADS_DATA = "ads_data"
+
+const val AD_NOTE = "ad"
+const val INFO_NODE = "info"
+const val MAIN_NODE = "main"

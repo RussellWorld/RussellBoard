@@ -43,11 +43,11 @@ class AdsRcAdapter(val activity: MainActivity) : RecyclerView.Adapter<AdsRcAdapt
             textViewTitle.text = ad.title
             tvDescription.text = ad.description
             tvPrice.text = ad.price
+            tvViewCounter.text = ad.viewsCounter
             showEditPanel(isOwner(ad))
+            itemView.setOnClickListener { activity.onAdViewed(ad) }
             ibEditAd.setOnClickListener(onClickEdit(ad))
-            ibDeleteAd.setOnClickListener {
-                activity.onDeleteItem(ad)
-            }
+            ibDeleteAd.setOnClickListener { activity.onDeleteItem(ad) }
         }
 
         private fun onClickEdit(ad: Ad): View.OnClickListener {
@@ -73,7 +73,8 @@ class AdsRcAdapter(val activity: MainActivity) : RecyclerView.Adapter<AdsRcAdapt
         }
     }
 
-    interface DeleteItemListener {
+    interface ItemsListener {
         fun onDeleteItem(ad: Ad)
+        fun onAdViewed(ad: Ad)
     }
 }

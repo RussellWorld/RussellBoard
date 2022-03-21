@@ -7,18 +7,32 @@ import com.google.firebase.database.Query
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
+import com.russellworld.russellboard.utilits.AD_NOTE
+import com.russellworld.russellboard.utilits.INFO_NODE
+import com.russellworld.russellboard.utilits.MAIN_NODE
 
 class DbManager {
-    val database = Firebase.database.getReference("Main")
+    val database = Firebase.database.getReference(MAIN_NODE)
     val auth = Firebase.auth
 
     fun publishAdd(ad: Ad, finishWorkListener: FinishWorkListener) {
         if (auth.uid != null) {
             database.child(ad.key ?: "empty")
-                .child(auth.uid!!).child("ad").setValue(ad)
+                .child(auth.uid!!).child(AD_NOTE).setValue(ad)
                 .addOnCompleteListener {
                     finishWorkListener.onFinish()
                 }
+        }
+    }
+
+    fun adViewed(ad: Ad) {
+        var counter = ad.viewsCounter.toInt()
+        counter++
+
+        if (auth.uid != null) {
+            database.child(ad.key ?: "empty")
+                .child(INFO_NODE).setValue(InfoItem(counter.toString(), ad.emailCounter, ad.callsCounter))
+
         }
     }
 
@@ -44,8 +58,15 @@ class DbManager {
             override fun onDataChange(snapshot: DataSnapshot) {
                 val adArray = ArrayList<Ad>()
                 for (item in snapshot.children) {
-                    val ad = item.children.iterator().next().child("ad").getValue(Ad::class.java)
-                    if (ad != null) adArray.add(ad)
+                    var ad: Ad? = null
+                    item.children.forEach {
+                        if (ad == null) ad = it.child(AD_NOTE).getValue(Ad::class.java)
+                    }
+                    val infoItem = item.child(INFO_NODE).getValue(InfoItem::class.java)
+                    ad?.viewsCounter = infoItem?.viewsCounter ?: "0"
+                    ad?.emailCounter = infoItem?.emailsCounter ?: "0"
+                    ad?.callsCounter = infoItem?.callsCounter ?: "0"
+                    if (ad != null) adArray.add(ad!!)
                 }
                 readDataCallBack?.readData(adArray)
             }
