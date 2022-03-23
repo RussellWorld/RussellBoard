@@ -16,7 +16,22 @@ class FirebaseViewModel : ViewModel() {
         })
     }
 
-    fun adViewed(ad: Ad){
+    fun onFavClick(ad: Ad) {
+        dbManager.onFavClick(ad, object : DbManager.FinishWorkListener {
+            override fun onFinish() {
+                val updateList = liveAdsData.value
+                val position = updateList?.indexOf(ad)
+                if (position != -1){
+                    position?.let {
+                        updateList[position] = updateList[position].copy(isFav = !ad.isFav)
+                    }
+                }
+                liveAdsData.postValue(updateList)
+            }
+        })
+    }
+
+    fun adViewed(ad: Ad) {
         dbManager.adViewed(ad)
     }
 
@@ -29,7 +44,7 @@ class FirebaseViewModel : ViewModel() {
     }
 
     fun deleteItem(ad: Ad) {
-        dbManager.deleteAd(ad, object : DbManager.FinishWorkListener{
+        dbManager.deleteAd(ad, object : DbManager.FinishWorkListener {
             override fun onFinish() {
                 val updatedList = liveAdsData.value
                 updatedList?.remove(ad)

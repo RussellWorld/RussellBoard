@@ -8,6 +8,7 @@ import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 import com.russellworld.russellboard.utilits.AD_NOTE
+import com.russellworld.russellboard.utilits.FAVS_NODE
 import com.russellworld.russellboard.utilits.INFO_NODE
 import com.russellworld.russellboard.utilits.MAIN_NODE
 
@@ -33,6 +34,42 @@ class DbManager {
             database.child(ad.key ?: "empty")
                 .child(INFO_NODE).setValue(InfoItem(counter.toString(), ad.emailCounter, ad.callsCounter))
 
+        }
+    }
+
+    fun onFavClick(ad: Ad, finishWorkListener: FinishWorkListener) {
+        if (ad.isFav) {
+            removeFromFavs(ad, finishWorkListener)
+        } else {
+            addToFavs(ad, finishWorkListener)
+        }
+    }
+
+    fun addToFavs(ad: Ad, finishWorkListener: FinishWorkListener) {
+        ad.key?.let {
+            auth.uid?.let { uid ->
+                database.child(it).child(FAVS_NODE).child(uid)
+                    .setValue(uid)
+                    .addOnCompleteListener {
+                        if (it.isSuccessful) {
+                            finishWorkListener.onFinish()
+                        }
+                    }
+            }
+        }
+    }
+
+    private fun removeFromFavs(ad: Ad, finishWorkListener: FinishWorkListener) {
+        ad.key?.let {
+            auth.uid?.let { uid ->
+                database.child(it).child(FAVS_NODE).child(uid)
+                    .removeValue()
+                    .addOnCompleteListener {
+                        if (it.isSuccessful) {
+                            finishWorkListener.onFinish()
+                        }
+                    }
+            }
         }
     }
 

@@ -173,4 +173,8 @@ class MainActivity : AppCompatActivity(),
     override fun onAdViewed(ad: Ad) {
         firebaseViewModel.adViewed(ad)
     }
+
+    override fun onFavClicked(ad: Ad) {
+       firebaseViewModel.onFavClick(ad)
+    }
 }
