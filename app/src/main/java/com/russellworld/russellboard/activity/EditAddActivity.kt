@@ -175,6 +175,7 @@ class EditAddActivity : AppCompatActivity(), FragmentCloseInterface {
                 edPrice.text.toString(),
                 edDescription.text.toString(),
                 dbManager.database.push().key,
+                "0",
                 dbManager.auth.uid
             )
         }

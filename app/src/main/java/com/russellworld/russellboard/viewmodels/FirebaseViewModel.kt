@@ -21,9 +21,12 @@ class FirebaseViewModel : ViewModel() {
             override fun onFinish() {
                 val updateList = liveAdsData.value
                 val position = updateList?.indexOf(ad)
-                if (position != -1){
+                if (position != -1) {
                     position?.let {
-                        updateList[position] = updateList[position].copy(isFav = !ad.isFav)
+                        val favCounter =
+                            if (ad.isFav) ad.favCounter.toInt() - 1 else ad.favCounter.toInt() + 1
+                        updateList[position] =
+                            updateList[position].copy(isFav = !ad.isFav, favCounter = favCounter.toString())
                     }
                 }
                 liveAdsData.postValue(updateList)

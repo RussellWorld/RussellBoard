@@ -45,6 +45,7 @@ class AdsRcAdapter(val activity: MainActivity) : RecyclerView.Adapter<AdsRcAdapt
             tvDescription.text = ad.description
             tvPrice.text = ad.price
             tvViewCounter.text = ad.viewsCounter
+            tvFavCounter.text = ad.favCounter
             if (ad.isFav){
                 btnFau.setImageResource(R.drawable.ic_favarite_pressed)
             } else {
