@@ -3,6 +3,7 @@ package com.russellworld.russellboard
 import android.content.Intent
 import android.os.Bundle
 import android.view.MenuItem
+import android.view.View
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.viewModels
@@ -75,6 +76,9 @@ class MainActivity : AppCompatActivity(),
             if (it != null) {
                 adapter.updateAdapter(it)
             }
+            rootMainElement.mainContent.tvEmptry.visibility =
+                if (it?.isEmpty()!!) View.VISIBLE else View.GONE
+
         }
     }
 
@@ -106,7 +110,7 @@ class MainActivity : AppCompatActivity(),
                     rootMainElement.mainContent.mainToolbar.title = getString(R.string.add_my_adds)
                 }
                 R.id.id_favs -> {
-                    Toast.makeText(this@MainActivity, "Favs", Toast.LENGTH_SHORT).show()
+                    firebaseViewModel.loadMyFavs()
                 }
                 R.id.id_home -> {
                     firebaseViewModel.loadAllAds()
@@ -175,6 +179,6 @@ class MainActivity : AppCompatActivity(),
     }
 
     override fun onFavClicked(ad: Ad) {
-       firebaseViewModel.onFavClick(ad)
+        firebaseViewModel.onFavClick(ad)
     }
 }
