@@ -55,4 +55,5 @@
     <!-- AdListItem -->
     <string name="price_desc">Цена:</string>
     <string name="add_my_def">Разное</string>
+    <string name="tvAcc_guest">Гость</string>
 </resources>

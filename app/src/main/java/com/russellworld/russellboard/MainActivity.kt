@@ -17,6 +17,7 @@ import com.google.android.material.navigation.NavigationView
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
+import com.russellworld.russellboard.accounthelper.AccountHelper
 import com.russellworld.russellboard.activity.EditAddActivity
 import com.russellworld.russellboard.adapters.AdsRcAdapter
 import com.russellworld.russellboard.databinding.ActivityMainBinding
@@ -77,7 +78,7 @@ class MainActivity : AppCompatActivity(),
                 adapter.updateAdapter(it)
             }
             rootMainElement.mainContent.tvEmptry.visibility =
-                if (it?.isEmpty()!!) View.VISIBLE else View.GONE
+                if (it?.isEmpty() == true) View.VISIBLE else View.GONE
 
         }
     }
@@ -153,6 +154,10 @@ class MainActivity : AppCompatActivity(),
                 dialogHelper.createSignDialog(SIGN_IN_STATE)
             }
             R.id.acc_sign_out -> {
+                if (mAuth.currentUser?.isAnonymous == true) {
+                    rootMainElement.drawerLayout.closeDrawer(GravityCompat.START)
+                    return true
+                }
                 uiUpdate(null)
                 mAuth.signOut()
                 dialogHelper.accountHelper.signOutGoogleAccount()
@@ -163,10 +168,16 @@ class MainActivity : AppCompatActivity(),
     }
 
     fun uiUpdate(user: FirebaseUser?) {
-        tvAccount.text = if (user == null) {
-            resources.getString(R.string.not_reg)
-        } else {
-            user.email
+        if (user == null) {
+            dialogHelper.accountHelper.signInAnonymously(object : AccountHelper.CompleteListener {
+                override fun onComplete() {
+                    tvAccount.text = getString(R.string.tvAcc_guest)
+                }
+            })
+        } else if (user.isAnonymous) {
+            tvAccount.text = getString(R.string.tvAcc_guest)
+        } else if (!user.isAnonymous) {
+            tvAccount.text = user.email
         }
     }
 

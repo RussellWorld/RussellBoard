@@ -102,10 +102,14 @@ class AccountHelper(private val mainActivity: MainActivity) {
 
     fun signInFirebaseWithGoogle(token: String) {
         val credential = GoogleAuthProvider.getCredential(token, null)
-        mainActivity.mAuth.signInWithCredential(credential).addOnCompleteListener { task ->
+        mainActivity.mAuth.currentUser?.delete()?.addOnCompleteListener { task ->
             if (task.isSuccessful) {
-                Toast.makeText(mainActivity, "Sign in done", Toast.LENGTH_SHORT).show()
-                mainActivity.uiUpdate(task.result.user)
+                mainActivity.mAuth.signInWithCredential(credential).addOnCompleteListener { task1 ->
+                    if (task1.isSuccessful) {
+                        Toast.makeText(mainActivity, "Sign in done", Toast.LENGTH_SHORT).show()
+                        mainActivity.uiUpdate(task1.result.user)
+                    }
+                }
             }
         }
     }
@@ -160,5 +164,20 @@ class AccountHelper(private val mainActivity: MainActivity) {
                 ).show()
             }
         }
+    }
+
+    fun signInAnonymously(completeListener: CompleteListener) {
+        mainActivity.mAuth.signInAnonymously().addOnCompleteListener { task ->
+            if (task.isSuccessful) {
+                completeListener.onComplete()
+                Toast.makeText(mainActivity, "Вы вошли как Гость", Toast.LENGTH_LONG).show()
+            } else {
+                Toast.makeText(mainActivity, "Не удалось войти как Гость", Toast.LENGTH_LONG).show()
+            }
+        }
+    }
+
+    interface CompleteListener {
+        fun onComplete()
     }
 }
