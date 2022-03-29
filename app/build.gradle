@@ -53,7 +53,7 @@ dependencies {
     implementation 'com.google.android.gms:play-services-auth:20.1.0'
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.5.2")
     implementation 'com.squareup.picasso:picasso:2.71828'
-    implementation("com.fxn769:pix:1.5.6")
+    implementation 'io.ak1.pix:piximagepicker:1.6.3'
     implementation 'com.google.android.gms:play-services-ads:20.6.0'
     testImplementation 'junit:junit:4.13.2'
     implementation 'androidx.navigation:navigation-fragment-ktx:2.4.2'

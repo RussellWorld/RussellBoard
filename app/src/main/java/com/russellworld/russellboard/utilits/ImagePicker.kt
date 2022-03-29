@@ -6,10 +6,12 @@ import androidx.activity.result.ActivityResult
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
-import com.fxn.pix.Options
-import com.fxn.pix.Pix
-import com.fxn.utility.PermUtil
+import com.russellworld.russellboard.R
 import com.russellworld.russellboard.activity.EditAddActivity
+import io.ak1.pix.helpers.PixEventCallback
+import io.ak1.pix.helpers.addPixToActivity
+import io.ak1.pix.models.Mode
+import io.ak1.pix.models.Options
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -22,23 +24,33 @@ object ImagePicker {
     const val REQUEST_CODE_GET_SINGLE_IMAGE = 998
     fun getOptions(imageCount: Int): Options {
 
-        return Options.init()
-            .setCount(imageCount)
-            .setFrontfacing(false)
-            .setMode(Options.Mode.Picture)
-            .setScreenOrientation(Options.SCREEN_ORIENTATION_PORTRAIT)
-            .setPath("/pix/images")
+        return Options().apply {
+            count = imageCount
+            isFrontFacing = false
+            mode = Mode.Picture
+            path = "/pix/images"
+        }
     }
 
     fun launcherImages(
         edActivity: EditAddActivity, launcher: ActivityResultLauncher<Intent>?,
         imageCount: Int
     ) {
-        PermUtil.checkForCamaraWritePermissions(edActivity) {
-            val intent = Intent(edActivity, Pix::class.java).apply {
-                putExtra("options", getOptions(imageCount))
+        edActivity.addPixToActivity(R.id.placeHolder, getOptions(imageCount)) { result ->
+            when (result.status) {
+                PixEventCallback.Status.SUCCESS -> {
+                    val fragmentList = edActivity.supportFragmentManager.fragments
+                    fragmentList.forEach {
+                        if (it.isVisible) {
+                            edActivity.supportFragmentManager
+                                .beginTransaction()
+                                .remove(it)
+                                .commit()
+                        }
+                    }
+                }
+                PixEventCallback.Status.BACK_PRESSED -> {}
             }
-            launcher?.launch(intent)
         }
     }
 
@@ -73,8 +85,7 @@ object ImagePicker {
     }
 
     fun getLauncherForSingleImages(edActivity: EditAddActivity): ActivityResultLauncher<Intent> {
-        return edActivity.registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
-                result: ActivityResult ->
+        return edActivity.registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result: ActivityResult ->
             if (result.resultCode == AppCompatActivity.RESULT_OK) {
                 if (result.data != null) {
 

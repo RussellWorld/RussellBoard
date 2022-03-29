@@ -1,14 +1,12 @@
 package com.russellworld.russellboard.activity
 
 import android.content.Intent
-import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.appcompat.app.AppCompatActivity
-import com.fxn.utility.PermUtil
 import com.russellworld.russellboard.R
 import com.russellworld.russellboard.adapters.ImageAdapter
 import com.russellworld.russellboard.databinding.ActivityEditAddBinding
@@ -77,28 +75,6 @@ class EditAddActivity : AppCompatActivity(), FragmentCloseInterface {
         fm.commit()
     }
 
-    override fun onRequestPermissionsResult(
-        requestCode: Int,
-        permissions: Array<out String>,
-        grantResults: IntArray
-    ) {
-        when (requestCode) {
-            PermUtil.REQUEST_CODE_ASK_MULTIPLE_PERMISSIONS -> {
-                if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    ImagePicker.getOptions(3)
-                } else {
-                    Toast.makeText(
-                        this,
-                        "Approve permissions to open Pix ImagePicker", Toast.LENGTH_LONG
-                    )
-                        .show()
-                }
-                return
-            }
-        }
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-    }
-
     private fun init() {
         imageAdapter = ImageAdapter()
         rootElement.vpImages.adapter = imageAdapter
@@ -146,7 +122,7 @@ class EditAddActivity : AppCompatActivity(), FragmentCloseInterface {
 
     fun onClickPublish(view: View) {
         val adTemp = fillAd()
-        if (isEditState){
+        if (isEditState) {
             dbManager.publishAdd(adTemp.copy(key = ad?.key), onPublishFinish())
         } else {
             dbManager.publishAdd(adTemp, onPublishFinish())
@@ -154,7 +130,7 @@ class EditAddActivity : AppCompatActivity(), FragmentCloseInterface {
     }
 
     private fun onPublishFinish(): DbManager.FinishWorkListener {
-        return object: DbManager.FinishWorkListener{
+        return object : DbManager.FinishWorkListener {
             override fun onFinish() {
                 finish()
             }
