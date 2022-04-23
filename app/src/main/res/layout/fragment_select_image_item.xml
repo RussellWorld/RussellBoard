@@ -37,4 +37,12 @@
         app:layout_constraintStart_toStartOf="@+id/inDrug"
         app:layout_constraintTop_toBottomOf="@+id/tvTitile"
         app:srcCompat="@drawable/ic_drag" />
+
+    <ImageButton
+        android:id="@+id/btmEditImage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvTitile"
+        app:srcCompat="@android:drawable/ic_menu_edit" />
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -23,6 +23,7 @@ class EditAddActivity : AppCompatActivity(), FragmentCloseInterface {
     private var chooseImageFragment: ImageListFragment? = null
     private val dialog = DialogSpinnerHelper()
     private lateinit var imageAdapter: ImageAdapter
+    var editImagePos = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -49,6 +50,11 @@ class EditAddActivity : AppCompatActivity(), FragmentCloseInterface {
                     chooseImageFragment?.updateAdapter(returnValue)
                 }
             }
+        } else if (resultCode == RESULT_OK && requestCode == ImagePicker.REQUEST_CODE_GET_SINGLE_IMAGE) {
+            if (data != null) {
+                val uri = data.getStringArrayListExtra(Pix.IMAGE_RESULTS)
+                chooseImageFragment?.setSingleImage(uri?.get(0)!!, editImagePos)
+            }
         }
     }
 
@@ -69,7 +75,7 @@ class EditAddActivity : AppCompatActivity(), FragmentCloseInterface {
         when (requestCode) {
             PermUtil.REQUEST_CODE_ASK_MULTIPLE_PERMISSIONS -> {
                 if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    ImagePicker.getImages(this, 3)
+                    ImagePicker.getImages(this, 3, ImagePicker.REQUEST_CODE_GET_IMAGES)
                 } else {
                     Toast.makeText(
                         this,
@@ -107,10 +113,10 @@ class EditAddActivity : AppCompatActivity(), FragmentCloseInterface {
     }
 
     fun onClickGetImages(view: View) {
-        if (imageAdapter.mainArray.size == 0){
-        ImagePicker.getImages(this, 3)
-    } else {
-        openChooseImageFragment(imageAdapter.mainArray)
+        if (imageAdapter.mainArray.size == 0) {
+            ImagePicker.getImages(this, 3, ImagePicker.REQUEST_CODE_GET_IMAGES)
+        } else {
+            openChooseImageFragment(imageAdapter.mainArray)
         }
     }
 
